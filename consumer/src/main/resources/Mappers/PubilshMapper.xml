@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.PublishMapper">
+
+
+    <insert id="publishQuestion" parameterType="com.example.demo.pojo.Question" useGeneratedKeys="true" keyProperty="question_id">
+        insert into question(user_id,user_name,question_description,question_detail,question_tags)
+         values (#{publish.user_id},#{publish.user_name},#{publish.question_description},
+        #{publish.question_detail},#{publish.question_tags})
+            on duplicate key update user_id=(user_id),
+            user_name=(user_name),
+            question_description=(question_description),
+            question_detail = (question_detail), question_tags=(question_tags)
+    </insert>
+
+    <insert id="publishComment" parameterType="com.example.demo.pojo.Comment" useGeneratedKeys="true" keyProperty="comment_id">
+        insert into comment(user_id,user_name,comment_detail,question_id)
+        values (#{comment.user_id},#{comment.user_name},#{comment.comment_detail},
+                #{comment.question_id})
+            on duplicate key update user_id=(user_id),
+                user_name=(user_name),
+                comment_detail=(comment_detail),
+                question_id = (question_id)
+    </insert>
+
+    <update id="commentIncrement" parameterType="java.lang.Integer" >
+        update question set number_comment=number_comment+1 where question_id =#{id}
+    </update>
+
+</mapper>
