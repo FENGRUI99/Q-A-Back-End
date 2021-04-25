@@ -1,17 +1,27 @@
 package com.example.demo.pojo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
+@ApiModel
 public class Comment implements Serializable {
 
     public Comment() {
     }
 
+    @ApiModelProperty(value = "comment_id")
     int comment_id;
+    @ApiModelProperty(value = "user_id")
     String user_id;
+    @ApiModelProperty(value = "user_name")
     String user_name;
+    @ApiModelProperty(value = "comment_detail")
     String comment_detail;
+    @ApiModelProperty(value = "question_id")
     int question_id;
+    @ApiModelProperty(value = "create_time")
     String create_time;
 
     public Comment(String user_id, String user_name, String comment_detail, int question_id) {

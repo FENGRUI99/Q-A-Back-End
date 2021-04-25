@@ -4,6 +4,7 @@ import com.example.demo.mapper.HelloMapper;
 import com.example.demo.pojo.studentInfo;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class RegisterService implements RocketMQListener<studentInfo> {
 
     @Resource
     StringRedisTemplate template;
+
 
     @Resource
     HelloMapper mapper;

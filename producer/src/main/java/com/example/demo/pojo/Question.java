@@ -1,8 +1,12 @@
 package com.example.demo.pojo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
+@ApiModel
 public class Question implements Serializable {
 
 
@@ -42,15 +46,25 @@ public class Question implements Serializable {
         this.commentList = commentList;
     }
 
+    @ApiModelProperty(value = "question_id")
     int question_id;
+    @ApiModelProperty(value = "user_id")
     String user_id;
+    @ApiModelProperty(value = "user_name")
     String user_name;
+    @ApiModelProperty(value = "question_description")
     String question_description;
+    @ApiModelProperty(value = "question_detail")
     String question_detail;
+    @ApiModelProperty(value = "question_tags")
     String question_tags;
+    @ApiModelProperty(value = "number_comment")
     int number_comment;
+    @ApiModelProperty(value = "likes")
     int likes;
+    @ApiModelProperty(value = "time")
     String time;
+    @ApiModelProperty(value = "coomentList")
     List<Comment> commentList;
 
 

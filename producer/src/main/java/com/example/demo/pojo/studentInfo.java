@@ -1,12 +1,21 @@
 package com.example.demo.pojo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
+@ApiModel
 public class studentInfo implements Serializable {
+    @ApiModelProperty(value = "user_id")
     String user_id;
+    @ApiModelProperty(value = "user_mail")
     String user_mail;
+    @ApiModelProperty(value = "user_name")
     String user_name;
+    @ApiModelProperty(value = "user_psw")
     String user_psw;
+    @ApiModelProperty(value = "user_tags")
     String user_tags;
 
     public studentInfo() {

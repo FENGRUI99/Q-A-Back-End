@@ -2,6 +2,8 @@ package com.example.demo.controller;
 import com.example.demo.configuration.Message;
 import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.service.service.HotestService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
+@Api(tags = "heat user and question API")
 public class HotestController {
     /*
     * 写发表问题的时候要在redis中加tag跟user的热度
@@ -25,6 +28,7 @@ public class HotestController {
     @Resource
     RocketMQTemplate template;
 
+    @ApiOperation(value = "liked API")
     @RequestMapping("/like")
     public ResponseMessage like(@RequestBody Message message){
         /*
@@ -49,16 +53,19 @@ public class HotestController {
         return ResponseMessage.success();
     }
 
+    @ApiOperation(value = "hot user API")
     @RequestMapping("/contributor")
     public ResponseMessage contributor(){
         return service.contributor();
     }
 
+    @ApiOperation(value = "hot tags API")
     @RequestMapping("/hotTags")
     public ResponseMessage hotTags(){
         return service.hotTags();
     }
 
+    @ApiOperation(value = "user like list API")
     @RequestMapping("/userLike")
     public ResponseMessage userLike(@RequestBody Message message){
         /*
