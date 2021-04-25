@@ -28,7 +28,7 @@ public class HotestController {
     @Resource
     RocketMQTemplate template;
 
-    @ApiOperation(value = "liked API")
+    @ApiOperation(value = "liked API",httpMethod = "POST")
     @RequestMapping("/like")
     public ResponseMessage like(@RequestBody Message message){
         /*
@@ -53,19 +53,19 @@ public class HotestController {
         return ResponseMessage.success();
     }
 
-    @ApiOperation(value = "hot user API")
+    @ApiOperation(value = "hot user API",httpMethod = "GET")
     @RequestMapping("/contributor")
     public ResponseMessage contributor(){
         return service.contributor();
     }
 
-    @ApiOperation(value = "hot tags API")
+    @ApiOperation(value = "hot tags API",httpMethod = "GET")
     @RequestMapping("/hotTags")
     public ResponseMessage hotTags(){
         return service.hotTags();
     }
 
-    @ApiOperation(value = "user like list API")
+    @ApiOperation(value = "user like list API",httpMethod = "GET")
     @RequestMapping("/userLike")
     public ResponseMessage userLike(@RequestBody Message message){
         /*

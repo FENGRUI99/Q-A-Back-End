@@ -32,6 +32,11 @@ public class QuestionPublishService implements RocketMQListener<Question> {
             template.opsForHash().put("question_like", String.valueOf(length+1),"0");
             template.opsForZSet().incrementScore("question_contribute",question.getUser_id(),1);
             mapper.publishQuestion(question);
+            String[] tags=question.getQuestion_tags().split(",");
+            for (String tag : tags) {
+                template.opsForZSet().incrementScore("question_tags",tag,1);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
