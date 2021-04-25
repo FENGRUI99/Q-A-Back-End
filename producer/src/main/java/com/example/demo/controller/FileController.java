@@ -22,7 +22,7 @@ public class FileController {
         }
         String fileName= file.getOriginalFilename();
         fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_" + fileName;
-        String path ="/resources/image"+fileName;
+        String path ="/resources/image/"+fileName;
         File dest = new File(path);
         file.transferTo(dest);
         return ResponseMessage.success();
