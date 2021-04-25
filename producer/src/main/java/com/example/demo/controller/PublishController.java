@@ -20,11 +20,11 @@ public class PublishController {
     @Resource
     PublishService service;
 
-    @ApiOperation(value = "public question API")
+    @ApiOperation(value = "public question API",httpMethod = "POST")
     @RequestMapping("/publishQuestion")
     public ResponseMessage publishQuetion(@RequestBody() Question publish){ return service.publishQuestion(publish); }
 
-    @ApiOperation(value = "public comment API")
+    @ApiOperation(value = "public comment API",httpMethod = "POST")
     @RequestMapping("/publishComment")
     public ResponseMessage publishComment(@RequestBody() Comment comment){
         return service.publishComment(comment);

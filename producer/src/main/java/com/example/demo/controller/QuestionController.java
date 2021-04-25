@@ -21,14 +21,14 @@ public class QuestionController {
     @Resource
     QuestionService service;
 
-    @ApiOperation(value = "list questions API")
+    @ApiOperation(value = "list questions API",httpMethod = "GET")
     @RequestMapping("/listQuestion")
     public ResponseMessage<Question> listQuestion(@RequestBody Message message) {
         //  只要一个 request
         return service.listQuestion(message.getRequest());
     }
 
-    @ApiOperation(value = "search API")
+    @ApiOperation(value = "search API",httpMethod = "GET")
     @RequestMapping("/search")
     public ResponseMessage<Question> search(@RequestBody Message message){
         //  只要一个 request
@@ -37,7 +37,7 @@ public class QuestionController {
         return service.search(message.getRequest());
     }
 
-    @ApiOperation(value = "list by tags API")
+    @ApiOperation(value = "list by tags API",httpMethod = "GET")
     @RequestMapping("/listbyTag")
     public ResponseMessage<Question> listbyTag(@RequestBody Message message){
         //  只要一个 request,返回一个tag或多个
@@ -47,25 +47,25 @@ public class QuestionController {
         return service.listbyTag(message.getRequest());
     }
 
-    @ApiOperation(value = "questions sort by time API")
+    @ApiOperation(value = "questions sort by time API",httpMethod = "GET")
     @RequestMapping("/sortbyTime")
     public ResponseMessage<Question> sortbyTime(){
         return service.timeSort();
     }
 
-    @ApiOperation(value = "question sort by likes API")
+    @ApiOperation(value = "question sort by likes API",httpMethod = "GET")
     @RequestMapping("/sortbyLikes")
     public ResponseMessage<Question> sortbyLikes(){
         return service.likesSort();
     }
 
-    @ApiOperation(value = "question sort by likes API")
+    @ApiOperation(value = "question sort by likes API",httpMethod = "GET")
     @RequestMapping("/sortbyAnswers")
     public ResponseMessage<Question> sortbyAnswers(){
         return service.answerSort();
     }
 
-    @ApiOperation(value = "question relevant API")
+    @ApiOperation(value = "question relevant API",httpMethod = "GET")
     @RequestMapping("/relevant")
     public ResponseMessage<Question> relevant(@RequestBody Message message){
         return service.relevant(message.getRequest());
