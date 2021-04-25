@@ -24,8 +24,6 @@ public class HelloServiceImp implements HelloService {
     public ResponseMessage login(String id, String psw) {
         System.out.println(id+" "+psw);
         try {
-            if(mapper.checkID(id)!=null)
-                return ResponseMessage.fail();
             if(mapper.login(id,psw).equals(psw)) {
                 List<studentInfo> studentInfo = mapper.nameReturn(id);
                 ResponseMessage responseMessage=ResponseMessage.success();
