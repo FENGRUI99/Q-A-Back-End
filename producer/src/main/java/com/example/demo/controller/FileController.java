@@ -25,7 +25,7 @@ public class FileController {
         String fileName= file.getOriginalFilename();
         fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_" + fileName;
 
-        String path = ResourceUtils.getURL("classpath:").getPath()+"static/upload/" +fileName;
+        String path = this.getClass().getClassLoader().getResource("static")+fileName;
         File dest = new File(path);
         file.transferTo(dest);
         return ResponseMessage.success();
