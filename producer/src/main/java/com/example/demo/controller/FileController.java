@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.configuration.ResponseMessage;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,8 @@ public class FileController {
         }
         String fileName= file.getOriginalFilename();
         fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_" + fileName;
-        String path ="/resources/image/"+fileName;
+
+        String path = ClassUtils.getDefaultClassLoader().getResource("static/img").getPath() +fileName;
         File dest = new File(path);
         file.transferTo(dest);
         return ResponseMessage.success();
