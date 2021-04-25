@@ -25,7 +25,8 @@ public class FileController {
         String fileName= file.getOriginalFilename();
         fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_" + fileName;
 
-        String path = this.getClass().getClassLoader().getResource("static")+fileName;
+        String path = System.getProperty("user.dir")+"/producer/target/classes/image/"+fileName;
+        System.out.println(path);
         File dest = new File(path);
         file.transferTo(dest);
         return ResponseMessage.success();
