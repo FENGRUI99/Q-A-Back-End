@@ -2,33 +2,25 @@ package com.example.demo.controller;
 
 
 import com.example.demo.configuration.ResponseMessage;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 @RestController
 public class FileController {
 
-    @RequestMapping("/img")
-    public ResponseMessage upload(@RequestBody() MultipartFile file) throws IOException {
-        if(file.isEmpty()){
-            return ResponseMessage.fail();
-        }
-        String fileName= file.getOriginalFilename();
-        fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_" + fileName;
+    @RequestMapping(value = "/img" , method = RequestMethod.POST)
+    public ResponseMessage upload(@RequestParam List<MultipartFile> files, HttpServletRequest request) throws IOException {
+        System.out.println(files.get(0).getBytes());
+        System.out.println(files.size());
 
-        String path = System.getProperty("user.dir")+"/producer/target/classes/image/"+fileName;
-        System.out.println(path);
-        File dest = new File(path);
-        file.transferTo(dest);
+        String s=Base64Utils.encodeToString(files.get(0).getBytes());
+        System.out.println(s);
+        System.out.println(s.length());
         return ResponseMessage.success();
     }
 }
