@@ -29,7 +29,6 @@ public class QuestionPublishService implements RocketMQListener<Question> {
 
     @Override
     public void onMessage(Question question) {
-        try {
             int length=template.opsForHash().entries("question_like").size();
             template.opsForHash().put("question_like", String.valueOf(length+1),"0");
             template.opsForZSet().incrementScore("question_contribute",question.getUser_id(),1);
@@ -39,13 +38,10 @@ public class QuestionPublishService implements RocketMQListener<Question> {
                 template.opsForZSet().incrementScore("question_tags",tag,1);
             }
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
             boolean flag=template.opsForHash().hasKey("question_like", String.valueOf(question.getQuestion_id()));
             if(flag)
                 template.opsForSet().remove("question_id", String.valueOf(question.getQuestion_id()));
-        }
+
 
     }
 }

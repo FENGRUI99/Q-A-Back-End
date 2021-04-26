@@ -30,7 +30,8 @@ public class PublishController {
     PublishService service;
 
     @ApiOperation(value = "public question API",httpMethod = "POST")
-    @RequestMapping("/publishQuestion")
+    @RequestMapping("/publishQuestionWP")
+
     public ResponseMessage publishQuetion( @RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("user_id") String user_id,@RequestParam("user_name") String user_name,
                                            @RequestParam("question_description") String description,@RequestParam("question_detail") String detail,
@@ -43,8 +44,10 @@ public class PublishController {
         question.setUser_id(user_id);
         question.setUser_name(user_name);
         List<String> list=new ArrayList<>();
-        for (MultipartFile file : files) {
-            list.add(Base64Utils.encodeToString(file.getBytes()));
+        if(files.size()>0) {
+            for (MultipartFile file : files) {
+                list.add(Base64Utils.encodeToString(file.getBytes()));
+            }
         }
         return service.publishQuestion(question,list);
     }
@@ -54,4 +57,14 @@ public class PublishController {
     public ResponseMessage publishComment(@RequestBody() Comment comment){
         return service.publishComment(comment);
     }
+
+
+    @ApiOperation(value = "public question API",httpMethod = "POST")
+    @RequestMapping("/publishQuestion")
+    public ResponseMessage publishQuetion(@RequestBody()Question question) throws IOException {
+
+        return service.publishQuestion(question);
+    }
+
+
 }
