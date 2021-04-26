@@ -1,7 +1,11 @@
 package com.example.demo.pojo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.util.List;
+
+
 
 public class Question implements Serializable {
 
@@ -76,6 +80,7 @@ public class Question implements Serializable {
     public void setQuestion_description(String question_description) {
         this.question_description = question_description;
     }
+
 
     public String getQuestion_detail() {
         return question_detail;

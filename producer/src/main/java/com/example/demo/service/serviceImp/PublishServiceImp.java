@@ -11,8 +11,14 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class PublishServiceImp implements PublishService {
@@ -27,11 +33,24 @@ public class PublishServiceImp implements PublishService {
     PublishMapper mapper;
 
     @Override
-    public ResponseMessage publishQuestion(Question question) {
+    public ResponseMessage publishQuestion(Question question, List<String> files) {
         rocketMQTemplate.asyncSend("QuestionPublishService", question, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
 
+                try {
+                    Thread.sleep(500);
+                    List<Integer> list = mapper.getId(question);
+                    int max=-1;
+                    for (Integer item : list) {
+                        System.out.println(item);
+                        max=Math.max(item,max);
+                    }
+                    System.out.println(max);
+                    mapper.addPic(max, files);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override

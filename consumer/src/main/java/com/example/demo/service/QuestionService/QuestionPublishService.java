@@ -9,8 +9,10 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 @RocketMQMessageListener(topic = "QuestionPublishService",consumerGroup = "QuestionPublishGroup")
@@ -44,5 +46,6 @@ public class QuestionPublishService implements RocketMQListener<Question> {
             if(flag)
                 template.opsForSet().remove("question_id", String.valueOf(question.getQuestion_id()));
         }
+
     }
 }

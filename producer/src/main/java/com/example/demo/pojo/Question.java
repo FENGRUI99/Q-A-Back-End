@@ -2,9 +2,11 @@ package com.example.demo.pojo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.List;
+
 
 @ApiModel
 public class Question implements Serializable {
@@ -64,9 +66,8 @@ public class Question implements Serializable {
     int likes;
     @ApiModelProperty(value = "time")
     String time;
-    @ApiModelProperty(value = "coomentList")
+    @ApiModelProperty(value = "commentList")
     List<Comment> commentList;
-
 
 
     public int getQuestion_id() { return question_id; }
