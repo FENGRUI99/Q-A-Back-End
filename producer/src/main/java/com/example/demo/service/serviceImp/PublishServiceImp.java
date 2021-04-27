@@ -43,10 +43,10 @@ public class PublishServiceImp implements PublishService {
 
             System.out.println(id);
             template.opsForList().leftPush("pic_list",id);
-            //mapper.addPic(id, files);
-            for (String file : files) {
-                template.opsForHash().put("pic",id,file);
-            }
+            mapper.addPic(id, files);
+            //for (String file : files) {
+             //   template.opsForHash().put("pic",id,file);
+            //}
         }catch (Exception e) {
             e.printStackTrace();
         }
