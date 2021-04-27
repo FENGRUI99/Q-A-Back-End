@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,35 +30,26 @@ public class PublishServiceImp implements PublishService {
 
     @Override
     public ResponseMessage publishQuestion(Question question, List<String> files) {
-        rocketMQTemplate.asyncSend("QuestionPublishService", question, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-
-
-                try {
-                    if(files.size()==0)
-                        return;
-                    Thread.sleep(2500);
-                    List<Integer> list = mapper.getId(question);
-                    int max=-1;
-
-                    for (Integer item : list) {
-                        System.out.println(item);
-                        max=Math.max(item,max);
-                    }
-                    System.out.println(max);
-                    template.opsForList().leftPush("pic_list",Integer.toString(max));
-                    mapper.addPic(max, files);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        try {
+            Date date=new Date();
+            String id=String.valueOf(date.getTime());
+            template.opsForHash().put("question_like", String.valueOf(id), "0");
+            template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
+            mapper.publishQuestion(question,id);
+            String[] tags = question.getQuestion_tags().split(",");
+            for (String tag : tags) {
+                template.opsForZSet().incrementScore("question_tags", tag, 1);
             }
 
-            @Override
-            public void onException(Throwable throwable) {
-                System.out.println("error");
+            System.out.println(id);
+            template.opsForList().leftPush("pic_list",id);
+            //mapper.addPic(id, files);
+            for (String file : files) {
+                template.opsForHash().put("pic",id,file);
             }
-        });
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         return ResponseMessage.success();
     }
 

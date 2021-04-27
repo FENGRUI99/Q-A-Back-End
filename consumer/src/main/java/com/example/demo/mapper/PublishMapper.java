@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PublishMapper {
-    void publishQuestion(@Param("publish") Question publish);
+    void publishQuestion(@Param("question") Question publish,@Param("id") String id);
     void publishComment(@Param("comment") Comment comment);
     void commentIncrement(@Param("id") int question_id);
 }

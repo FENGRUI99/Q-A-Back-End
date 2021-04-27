@@ -11,7 +11,8 @@ import java.util.List;
 
 @Mapper
 public interface FIleMapper {
-    void addPic(@Param("id") int id, @Param("list")List<String> files);
+    void addPic(@Param("id") String id, @Param("list")List<String> files);
     List<Integer> getId( @Param("question")Question question);
     List<String> getImage(@Param("id")String id);
+    void publishQuestion(@Param("question") Question publish,@Param("id") String id);
 }
