@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,19 +30,20 @@ public class QuestionPublishService implements RocketMQListener<Question> {
 
     @Override
     public void onMessage(Question question) {
-            int length=template.opsForHash().entries("question_like").size();
-            template.opsForHash().put("question_like", String.valueOf(length+1),"0");
-            template.opsForZSet().incrementScore("question_contribute",question.getUser_id(),1);
-            mapper.publishQuestion(question);
-            String[] tags=question.getQuestion_tags().split(",");
+        try {
+            Date date=new Date();
+            String id=String.valueOf(date.getTime());
+            template.opsForHash().put("question_like", String.valueOf(id), "0");
+            template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
+            mapper.publishQuestion(question,id);
+            String[] tags = question.getQuestion_tags().split(",");
             for (String tag : tags) {
-                template.opsForZSet().incrementScore("question_tags",tag,1);
+                template.opsForZSet().incrementScore("question_tags", tag, 1);
             }
 
-            boolean flag=template.opsForHash().hasKey("question_like", String.valueOf(question.getQuestion_id()));
-            if(flag)
-                template.opsForSet().remove("question_id", String.valueOf(question.getQuestion_id()));
-
+        }catch (Exception e) {
+          e.printStackTrace();
+        }
 
     }
 }

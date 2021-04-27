@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -62,7 +63,6 @@ public class PublishController {
     @ApiOperation(value = "public question API",httpMethod = "POST")
     @RequestMapping("/publishQuestion")
     public ResponseMessage publishQuetion(@RequestBody()Question question) throws IOException {
-
         return service.publishQuestion(question);
     }
 

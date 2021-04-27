@@ -4,7 +4,6 @@ package com.example.demo.controller;
 import com.example.demo.configuration.Message;
 import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.mapper.FIleMapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
@@ -39,3 +38,4 @@ public class FileController {
         return responseMessage;
     }
 }
+
