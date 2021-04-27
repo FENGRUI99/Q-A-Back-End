@@ -20,11 +20,11 @@ public class Comment implements Serializable {
     @ApiModelProperty(value = "comment_detail")
     String comment_detail;
     @ApiModelProperty(value = "question_id")
-    int question_id;
+    String question_id;
     @ApiModelProperty(value = "create_time")
     String create_time;
 
-    public Comment(String user_id, String user_name, String comment_detail, int question_id) {
+    public Comment(String user_id, String user_name, String comment_detail, String question_id) {
         this.user_id = user_id;
         this.user_name = user_name;
         this.comment_detail = comment_detail;
@@ -39,7 +39,7 @@ public class Comment implements Serializable {
         this.create_time = create_time;
     }
 
-    public Comment(int comment_id, String user_id, String user_name, String comment_detail, int question_id, String create_time) {
+    public Comment(int comment_id, String user_id, String user_name, String comment_detail, String question_id, String create_time) {
         this.comment_id = comment_id;
         this.user_id = user_id;
         this.user_name = user_name;
@@ -73,11 +73,11 @@ public class Comment implements Serializable {
     }
 
 
-    public  int getQuestion_id(){
+    public  String getQuestion_id(){
         return question_id;
     }
 
-    public void setQuestion_id(int question_id){
+    public void setQuestion_id(String question_id){
         this.question_id = question_id;
     }
 

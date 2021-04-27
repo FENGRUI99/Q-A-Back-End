@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.mapper.QuestionMapper">
 
     <resultMap id="QuestionList" type="com.example.demo.pojo.Question">
-        <id property="question_id" column="question_id" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        <id property="question_id" column="question_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="user_id" column="user_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="user_name" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="question_description" column="question_description" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -20,7 +20,7 @@
         <result property="user_id" column="user_id" jdbcType="VARCHAR"/>
         <result property="user_name" column="user_name" jdbcType="VARCHAR"/>
         <result property="comment_detail" column="comment_detail" jdbcType="VARCHAR"/>
-        <result property="question_id" column="question_id" jdbcType="BIGINT"/>
+        <result property="question_id" column="question_id" jdbcType="VARCHAR"/>
         <result property="creat_time" column="creat_time" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
