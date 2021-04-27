@@ -24,7 +24,7 @@ public class FileController {
     StringRedisTemplate template;
 
     @RequestMapping("/img")
-    public ResponseMessage<String> getImg(@RequestBody Message message){
+    public ResponseMessage<List<String>> getImg(@RequestBody Message message){
         ResponseMessage responseMessage=ResponseMessage.success();
         responseMessage.setEntity(mapper.getImage(message.getRequest()));
         return responseMessage;

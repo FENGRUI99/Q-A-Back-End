@@ -3830,9 +3830,8 @@ SELECT|sys.sys_config
     </key>
     <column id="912" parent="296" name="question_id">
       <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="913" parent="296" name="user_id">
       <Position>2</Position>
@@ -3842,6 +3841,7 @@ SELECT|sys.sys_config
     <column id="914" parent="296" name="user_name">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
     <column id="915" parent="296" name="question_description">
       <Position>4</Position>

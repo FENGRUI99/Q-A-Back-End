@@ -56,7 +56,7 @@
              </if>
         </where>
     </select>
-    
+
     <select id="timeSort" resultMap="QuestionList">
                select distinct q.question_id, q.user_id, q.user_name,q.question_description,
         q.question_detail, q.question_tags,q.number_comment, q.likes ,c.comment_id,

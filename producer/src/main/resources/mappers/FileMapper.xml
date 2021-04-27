@@ -20,7 +20,7 @@
         question_id =#{id}
     </select>
 
-    <insert id="publishQuestion" parameterType="com.example.demo.pojo.Question" useGeneratedKeys="true" keyProperty="question_id">
+    <insert id="publishQuestion" parameterType="com.example.demo.pojo.Question" >
         insert into question(question_id,user_id,user_name,question_description,question_detail,question_tags)
          values (#{id},#{question.user_id},#{question.user_name},#{question.question_description},
         #{question.question_detail},#{question.question_tags})

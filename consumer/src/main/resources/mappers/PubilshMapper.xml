@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.mapper.PublishMapper">
 
 
-    <insert id="publishQuestion" parameterType="com.example.demo.pojo.Question" useGeneratedKeys="true" keyProperty="question_id">
+    <insert id="publishQuestion" parameterType="com.example.demo.pojo.Question" >
         insert into question(question_id,user_id,user_name,question_description,question_detail,question_tags)
          values (#{id},#{question.user_id},#{question.user_name},#{question.question_description},
         #{question.question_detail},#{question.question_tags})
@@ -23,7 +23,7 @@
                 question_id = (question_id)
     </insert>
 
-    <update id="commentIncrement" parameterType="java.lang.Integer" >
+    <update id="commentIncrement" parameterType="java.lang.String" >
         update question set number_comment=number_comment+1 where question_id =#{id}
     </update>
 

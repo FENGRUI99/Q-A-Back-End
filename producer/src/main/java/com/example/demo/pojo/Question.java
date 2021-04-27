@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.List;
 
 
-
 @ApiModel
 public class Question implements Serializable {
 
@@ -49,18 +48,6 @@ public class Question implements Serializable {
         this.commentList = commentList;
     }
 
-    public Question(String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment, int likes, String time) {
-        this.question_id = question_id;
-        this.user_id = user_id;
-        this.user_name = user_name;
-        this.question_description = question_description;
-        this.question_detail = question_detail;
-        this.question_tags = question_tags;
-        this.number_comment = number_comment;
-        this.likes = likes;
-        this.time = time;
-    }
-
     @ApiModelProperty(value = "question_id")
     String question_id;
     @ApiModelProperty(value = "user_id")
@@ -85,7 +72,7 @@ public class Question implements Serializable {
 
     public String getQuestion_id() { return question_id; }
 
-    public void setQuestion_id(String  question_id) {
+    public void setQuestion_id(String question_id) {
         this.question_id = question_id;
     }
 
@@ -103,10 +90,6 @@ public class Question implements Serializable {
 
     public void setQuestion_description(String question_description) {
         this.question_description = question_description;
-    }
-
-    public Question(String question_id) {
-        this.question_id = question_id;
     }
 
     public String getQuestion_detail() {
@@ -155,6 +138,7 @@ public class Question implements Serializable {
     }
 
     public Question() {
+
     }
 
     public int getLikes() {

@@ -31,7 +31,7 @@ public class Question implements Serializable {
         this.time = time;
     }
 
-    public Question(int question_id, String user_id, String user_name, String question_description,
+    public Question(String question_id, String user_id, String user_name, String question_description,
                     String question_detail, String question_tags,
                     int number_comment, int likes, String time, List<Comment> commentList) {
         this.question_id = question_id;
@@ -46,7 +46,7 @@ public class Question implements Serializable {
         this.commentList = commentList;
     }
 
-    int question_id;
+    String question_id;
     String user_id;
     String user_name;
     String question_description;
@@ -59,9 +59,9 @@ public class Question implements Serializable {
 
 
 
-    public int getQuestion_id() { return question_id; }
+    public String getQuestion_id() { return question_id; }
 
-    public void setQuestion_id(int question_id) {
+    public void setQuestion_id(String question_id) {
         this.question_id = question_id;
     }
 
@@ -114,7 +114,7 @@ public class Question implements Serializable {
         this.number_comment = number_comment;
     }
 
-    public Question(int question_id, String user_id, String question_description,
+    public Question(String question_id, String user_id, String question_description,
                     String question_detail, String question_tags, int number_comment, List<Comment> commentList, int likes) {
         this.question_id = question_id;
         this.user_id = user_id;
