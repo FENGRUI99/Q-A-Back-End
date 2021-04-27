@@ -32,7 +32,7 @@ public class PublishServiceImp implements PublishService {
     public ResponseMessage publishQuestion(Question question, List<String> files) {
         try {
             Date date=new Date();
-            String id=String.valueOf(date.getTime());
+            String id=String.valueOf(date.getTime())+"l";
             template.opsForHash().put("question_like", String.valueOf(id), "0");
             template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
             mapper.publishQuestion(question,id);

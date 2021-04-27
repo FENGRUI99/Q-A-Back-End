@@ -32,8 +32,8 @@ public class QuestionPublishService implements RocketMQListener<Question> {
     public void onMessage(Question question) {
         try {
             Date date=new Date();
-            String id=String.valueOf(date.getTime());
-            template.opsForHash().put("question_like", String.valueOf(id), "0");
+            String id=String.valueOf(date.getTime())+"l";
+            template.opsForHash().put("question_like", id, "0");
             template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
             mapper.publishQuestion(question,id);
             String[] tags = question.getQuestion_tags().split(",");
