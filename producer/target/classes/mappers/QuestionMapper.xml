@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.QuestionMapper">
+
+    <resultMap id="QuestionList" type="com.example.demo.pojo.Question">
+        <id property="question_id" column="question_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="user_id" column="user_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="user_name" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="question_description" column="question_description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="question_detail" column="question_detail" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="question_tags" column="question_tags" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="number_comment" column="number_comment" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        <result property="likes" column="likes" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        <result property="time" column="time" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <collection property="commentList" resultMap="comment_listMap"/>
+    </resultMap>
+
+    <resultMap id="comment_listMap" type="com.example.demo.pojo.Comment">
+        <id property="comment_id" column="comment_id" jdbcType="BIGINT"/>
+        <result property="user_id" column="user_id" jdbcType="VARCHAR"/>
+        <result property="user_name" column="user_name" jdbcType="VARCHAR"/>
+        <result property="comment_detail" column="comment_detail" jdbcType="VARCHAR"/>
+        <result property="question_id" column="question_id" jdbcType="VARCHAR"/>
+        <result property="creat_time" column="creat_time" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="listQuestion" resultMap="QuestionList">
+        select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,
+        (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
+        then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
+        when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
+        then CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))),' hours ago')
+        else CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))/24),' days ago') END) as time,
+        c.comment_id, c.user_id, c.user_name, c.comment_detail,c.question_id
+        from ( question q left join
+        comment c on q.question_id=c.question_id)  order by
+        (case when (current_timestamp -q.create_time)/(24*60*60) &lt;=50 then 0.8
+        when (current_timestamp -q.create_time)/(24*60*60) &lt;=200 then 0.5
+        else 0.3 end) *q.number_comment desc
+    </select>
+
+    <select id="search" resultMap="QuestionList">
+        select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,c.comment_id,
+        c.user_id,c.user_name, c.comment_detail,c.question_id ,
+        (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
+        then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
+        when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
+        then CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))),' hours ago')
+        else CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))/24),' days ago') END) as time
+        from  question q left join comment c on q.question_id=c.question_id
+        <where>
+            <if test="target!=null"> q.question_description like '%${target}%'
+             or q.question_detail like '%${target}%'
+             </if>
+        </where>
+    </select>
+
+    <select id="timeSort" resultMap="QuestionList">
+               select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,c.comment_id,
+        c.user_id, c.user_name, c.comment_detail,c.question_id ,
+        (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
+        then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
+        when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
+        then CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))),' hours ago')
+        else CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))/24),' days ago') END) as time
+         from  question q left join comment c on q.question_id=c.question_id
+            order by q.create_time desc
+    </select>
+
+    <select id="answerSort" resultMap="QuestionList">
+               select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,c.comment_id,
+        c.user_id,  c.user_name, c.comment_detail,c.question_id ,
+        (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
+        then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
+        when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
+        then CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))),' hours ago')
+        else CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))/24),' days ago') END) as time
+         from  question q left join comment c on q.question_id=c.question_id
+            order by q.number_comment desc
+    </select>
+
+    <select id="likesSort" resultMap="QuestionList">
+               select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,c.comment_id,
+        c.user_id, c.user_name, c.comment_detail,c.question_id ,
+        (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
+        then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
+        when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
+        then CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))),' hours ago')
+        else CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))/24),' days ago') END) as time
+         from  question q left join comment c on q.question_id=c.question_id
+            order by q.likes desc
+    </select>
+
+    <select id="listbyTag" resultMap="QuestionList" >
+           select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,c.comment_id,
+        c.user_id, c.user_name, c.comment_detail,c.question_id ,
+        (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
+        then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
+        when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
+        then CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))),' hours ago')
+        else CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))/24),' days ago') END) as time
+         from  question q left join
+        comment c on q.question_id=c.question_id where q.question_tags like '%${tag}%'
+    </select>
+
+
+    <update id="likesAsync" parameterType="java.lang.Integer">
+        update question q set q.likes=#{likes,jdbcType=TINYINT} where q.question_id=#{id,jdbcType=TINYINT}
+    </update>
+
+
+    <select id="relevant" resultMap="QuestionList">
+        select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+                        q.question_detail, q.question_tags,q.number_comment, q.likes ,c.comment_id,
+                        c.user_id, c.user_name, c.comment_detail,c.question_id ,
+                        (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
+            then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
+        when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
+        then CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))),' hours ago')
+        else CONCAT(floor(Hour(TIMEDIFF(NOW(),q.create_time))/24),' days ago') END) as time
+         from  question q left join
+        comment c on q.question_id=c.question_id where q.question_tags like '%${relevant}%'
+        ORDER BY q.number_comment DESC
+    </select>
+
+</mapper>
