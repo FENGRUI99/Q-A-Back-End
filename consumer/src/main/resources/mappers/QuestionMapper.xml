@@ -110,8 +110,8 @@
     </select>
 
 
-    <update id="likesAsync" parameterType="java.lang.Integer">
-        update question q set q.likes=#{likes,jdbcType=TINYINT} where q.question_id=#{id,jdbcType=TINYINT}
+    <update id="likesAsync" parameterType="java.lang.String">
+        update question q set q.likes=#{likes,jdbcType=VARCHAR} where q.question_id=#{id,jdbcType=VARCHAR}
     </update>
 
 
