@@ -19,10 +19,11 @@ spring:
     username: fitzwang202006@163.com
     password: BTHSVBTDJRABAUOJ
     default-encoding: utf-8
-
-mail:
-  fromMail:
-    addr: fitzwang202006@163.com
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enabled: true
 
   redis:
     jedis:
@@ -42,4 +43,10 @@ rocketmq:
   producer:
     group: my-group
     send-message-timeout: 30000
+
+mail:
+  fromMail:
+    addr: fitzwang202006@163.com
+
+
 
