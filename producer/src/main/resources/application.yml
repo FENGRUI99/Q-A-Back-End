@@ -14,7 +14,15 @@ spring:
     password: louder123
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  mail:
+    host: smtp.163.com
+    username: fitzwang202006@163.com
+    password: BTHSVBTDJRABAUOJ
+    default-encoding: utf-8
 
+mail:
+  fromMail:
+    addr: fitzwang202006@163.com
 
   redis:
     jedis:

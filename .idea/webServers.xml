@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="034d30be-27ee-4717-bbbd-9ca80a6493aa" name="dev" url="http://121.5.27.43">
+        <fileTransfer rootFolder="/usr/local/back-end/consumer" accessType="SFTP" host="121.5.27.43" port="22" sshConfigId="9c65316a-734a-41af-a579-4591938568a6" sshConfig="root@121.5.27.43:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="3eda2bd3-ce3e-4f77-b8e1-a9e84087ad44" name="dev_product" url="http://121.5.27.43">
+        <fileTransfer rootFolder="/usr/local/back-end/producer" accessType="SFTP" host="121.5.27.43" port="22" sshConfigId="9c65316a-734a-41af-a579-4591938568a6" sshConfig="root@121.5.27.43:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
