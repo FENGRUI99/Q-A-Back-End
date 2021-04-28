@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.configuration.Message;
 import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.pojo.studentInfo;
 import com.example.demo.service.service.EmailVerifyService;
@@ -17,7 +18,8 @@ public class EmailVerifyController {
     EmailVerifyService service;
 
     @RequestMapping("/sendEmail")
-    public ResponseMessage sendEmail(@RequestBody() studentInfo student){
-        return service.sendEmail(student.getUser_mail());
+    public ResponseMessage sendEmail(@RequestBody Message message){
+        System.out.println(message.getRequest());
+        return service.sendEmail(message.getRequest());
     }
 }
