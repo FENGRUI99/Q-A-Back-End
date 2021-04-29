@@ -23,7 +23,6 @@ public class RegisterService implements RocketMQListener<studentInfo> {
 
     @Override
     public void onMessage(studentInfo student) {
-        System.out.println(1);
         template.opsForSet().add("id_set",student.getUser_id());
         template.opsForSet().add("mail_set",student.getUser_mail());
         template.opsForSet().add(student.getUser_id()+ "_likeSet","-1");

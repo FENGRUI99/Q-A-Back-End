@@ -19,11 +19,6 @@ spring:
     username: fitzwang202006@163.com
     password: BTHSVBTDJRABAUOJ
     default-encoding: utf-8
-    properties:
-      mail:
-        smtp:
-          ssl:
-            enabled: true
 
   redis:
     jedis:
