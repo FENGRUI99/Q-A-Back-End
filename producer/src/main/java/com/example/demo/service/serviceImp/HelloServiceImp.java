@@ -5,7 +5,10 @@ import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.mapper.HelloMapper;
 import com.example.demo.pojo.studentInfo;
 import com.example.demo.service.service.HelloService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +22,8 @@ public class HelloServiceImp implements HelloService {
 
     @Resource
     StringRedisTemplate template;
+
+
 
     @Override
     public ResponseMessage login(String id, String psw) {
@@ -57,6 +62,4 @@ public class HelloServiceImp implements HelloService {
         }
         return ResponseMessage.fail();
     }
-
-
 }

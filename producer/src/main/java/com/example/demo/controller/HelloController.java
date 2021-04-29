@@ -54,5 +54,4 @@ public class HelloController {
         return service.checkID(student.getUser_id());
     }
 
-
 }
