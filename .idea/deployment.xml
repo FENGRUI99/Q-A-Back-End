@@ -5,8 +5,8 @@
       <paths name="dev">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/consumer" web="/" />
-            <mapping deploy="" local="$PROJECT_DIR$/producer" web="/" />
+            <mapping local="$PROJECT_DIR$/consumer" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -14,7 +14,7 @@
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$/consumer" web="/" />
-            <mapping deploy="/" local="$PROJECT_DIR$/producer" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

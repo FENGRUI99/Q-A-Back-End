@@ -17,6 +17,27 @@ public class studentInfo implements Serializable {
     String user_psw;
     @ApiModelProperty(value = "user_tags")
     String user_tags;
+    @ApiModelProperty(value = "code")
+    String code;
+
+
+
+    public studentInfo(String user_id, String user_mail, String user_name, String user_psw, String user_tags, String code) {
+        this.user_id = user_id;
+        this.user_mail = user_mail;
+        this.user_name = user_name;
+        this.user_psw = user_psw;
+        this.user_tags = user_tags;
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public studentInfo() {
     }

@@ -20,6 +20,7 @@ spring:
     password: BTHSVBTDJRABAUOJ
     default-encoding: utf-8
 
+<<<<<<< HEAD
 mail:
   fromMail:
     addr: fitzwang202006@163.com
@@ -34,6 +35,18 @@ mail:
     password: louder123
     port: 6379
     timeout: 5000
+=======
+  redis:
+    jedis:
+      pool:
+        max-active: 300
+        max-wait: -1
+        max-idle: 100
+    host: 121.5.27.43
+    password: louder123
+    port: 6379
+    timeout: 6000
+>>>>>>> eba82a3c8c4d5f57a06c49f2d0c4ede21fe3f5e7
   application:
     name: louder_producer
 
@@ -43,3 +56,14 @@ rocketmq:
     group: my-group
     send-message-timeout: 30000
 
+<<<<<<< HEAD
+=======
+
+
+mail:
+  fromMail:
+    addr: fitzwang202006@163.com
+
+
+
+>>>>>>> eba82a3c8c4d5f57a06c49f2d0c4ede21fe3f5e7
