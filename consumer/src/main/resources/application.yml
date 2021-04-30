@@ -17,9 +17,9 @@ spring:
   redis:
     jedis:
       pool:
-        max-active: 100
-        max-wait: 1000
-        max-idle: 10
+        max-active: 300
+        max-wait: -1
+        max-idle: 100
     host: 121.5.27.43
     password: louder123
     port: 6379
@@ -33,5 +33,8 @@ spring:
 
 rocketmq:
   name-server: 121.5.27.43:9876
+
+redisson:
+
 
 

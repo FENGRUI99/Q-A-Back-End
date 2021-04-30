@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface QuestionPublishToEsService {
 
-    public boolean publishQuestion(Question question, List<String> files);
 
     public boolean publishQuestion(Question question);
 

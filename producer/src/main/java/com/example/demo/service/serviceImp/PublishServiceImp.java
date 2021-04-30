@@ -43,13 +43,9 @@ public class PublishServiceImp implements PublishService {
             for (String tag : tags) {
                 template.opsForZSet().incrementScore("question_tags", tag, 1);
             }
-
-            System.out.println(id);
             template.opsForList().leftPush("pic_list",id);
             mapper.addPic(id, files);
-
-
-            questionPublishToEsService.publishQuestion(question,files);
+            questionPublishToEsService.publishQuestion(question);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,12 +57,9 @@ public class PublishServiceImp implements PublishService {
         rocketMQTemplate.asyncSend("QuestionPublishService", question, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
-
             }
-
             @Override
             public void onException(Throwable throwable) {
-
             }
         });
         return ResponseMessage.success();

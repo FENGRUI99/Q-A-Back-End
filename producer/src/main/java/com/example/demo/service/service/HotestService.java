@@ -8,4 +8,5 @@ public interface HotestService {
     ResponseMessage contributor();
     ResponseMessage hotTags();
     ResponseMessage userLike(String user_id);
+    ResponseMessage like(Message message);
 }

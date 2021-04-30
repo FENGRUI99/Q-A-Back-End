@@ -20,24 +20,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
     @Autowired
     QuestionDao questionDao;
 
-    public boolean publishQuestion(Question question, List<String> files){
-        if (question!=null){
-            QuestionEs questionEs = new QuestionEs();
-            questionEs.setId(question.getQuestion_id());
-            questionEs.setUser_id(question.getUser_id());
-            questionEs.setUser_name(question.getUser_name());
-            questionEs.setQuestion_description(question.getQuestion_description());
-            questionEs.setQuestion_detail(question.getQuestion_detail());
-            questionEs.setQuestion_tags(question.getQuestion_tags());
-            questionEs.setNumber_comment(question.getNumber_comment());
-            questionEs.setLikes(question.getLikes());
-            questionEs.setCreate_time(question.getTime());
-            questionEs.setPics(files);
-            questionDao.save(questionEs);
-            return true;
-        }
-        return false;
-    }
+
 
     public boolean publishQuestion(Question question){
         if (question!=null){

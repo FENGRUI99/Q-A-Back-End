@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 
 import javax.annotation.Resource;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RocketMQMessageListener(topic = "LikeService_topic", consumerGroup = "likeConsume")
 @Service
@@ -26,18 +28,6 @@ public class LikeService implements RocketMQListener<Message> {
     QuestionPublishToEsService questionPublishToEsService;
     @Override
     public void onMessage(Message message) {
-        try{
-            String user_id=message.getRequest().split(" ")[0];
-            String question_id=message.getRequest().split(" ")[1];
-            template.opsForList().rightPush(user_id+"_likeList",question_id);
-            int sum= Integer.parseInt(template.opsForHash().get("question_like",question_id).toString());
-            sum+=Integer.parseInt(message.getMsg());
-            template.opsForHash().put("question_like",question_id,String.valueOf(sum));
-            mapper.likesAsync(Integer.parseInt(question_id),sum);
-            questionPublishToEsService.likesAsync(question_id,sum);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
     }
 }
