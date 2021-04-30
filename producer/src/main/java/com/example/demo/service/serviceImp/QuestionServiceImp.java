@@ -81,6 +81,7 @@ public class QuestionServiceImp implements QuestionService {
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 Map<String, HighlightField> highlight =documentFields.getHighlightFields();
                 HighlightField title=highlight.get("question_description");
+                HighlightField detail=highlight.get("question_details");
                 Map<String, Object> source=documentFields.getSourceAsMap();
                 if(title!=null){
                     Text[] fragments=title.fragments();
@@ -89,6 +90,14 @@ public class QuestionServiceImp implements QuestionService {
                         newTitle+=fragment;
                     }
                     source.put("question_description",newTitle);
+                }
+                if(detail!=null){
+                    Text[] fragments=detail.fragments();
+                    String newTitle="";
+                    for (Text fragment : fragments) {
+                        newTitle+=fragment;
+                    }
+                    source.put("question_detail",newTitle);
                 }
                 list.add(documentFields.getSourceAsMap());
             }
