@@ -14,6 +14,6 @@ public interface QuestionMapper {
     List<Question> answerSort();
     List<Question> timeSort();
     List<Question> likesSort();
-    void likesAsync(@Param("id")int id,@Param("likes") int likes);
+    void likesAsync(@Param("id")String id,@Param("likes") String likes);
     List<Question> relevant(@Param("relevant") String relevant);
 }

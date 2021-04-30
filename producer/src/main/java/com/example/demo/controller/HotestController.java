@@ -39,18 +39,18 @@ public class HotestController {
         * 点赞msg给1
         * 取消给-1
         * */
-        template.asyncSend("LikeService_topic", message, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-
-            }
-        });
-        return ResponseMessage.success();
+//        template.asyncSend("LikeService_topic", message, new SendCallback() {
+//            @Override
+//            public void onSuccess(SendResult sendResult) {
+//
+//            }
+//
+//            @Override
+//            public void onException(Throwable throwable) {
+//
+//            }
+//        });
+        return service.like(message);
     }
 
     @ApiOperation(value = "hot user API",httpMethod = "GET")

@@ -1,4 +1,8 @@
 package com.example.demo.utils;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 40826614460ae7d1d4b2a8af1af9d796fbf3b0f5
 
 import com.example.demo.pojo.Question;
 import org.jsoup.Jsoup;
@@ -39,4 +43,11 @@ public class HtmlParseUtil {
         }
         return questions;
     }
+<<<<<<< HEAD
+=======
+=======
+public class HtmlParseUtil {
+
+>>>>>>> eba82a3c8c4d5f57a06c49f2d0c4ede21fe3f5e7
+>>>>>>> 40826614460ae7d1d4b2a8af1af9d796fbf3b0f5
 }

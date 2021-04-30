@@ -44,12 +44,14 @@ public class PublishServiceImp implements PublishService {
                 template.opsForZSet().incrementScore("question_tags", tag, 1);
             }
 
-            System.out.println(id);
             template.opsForList().leftPush("pic_list",id);
             mapper.addPic(id, files);
+<<<<<<< HEAD
 
 
             questionPublishToEsService.publishQuestion(question,files);
+=======
+>>>>>>> 40826614460ae7d1d4b2a8af1af9d796fbf3b0f5
         }catch (Exception e) {
             e.printStackTrace();
         }

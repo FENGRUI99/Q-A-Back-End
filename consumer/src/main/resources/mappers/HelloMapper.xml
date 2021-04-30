@@ -18,7 +18,7 @@
     </select>
 
     <insert id="register" parameterType="com.example.demo.pojo.studentInfo">
-        insert into user_info values (
+        insert into user_info(user_id,user_mail,user_name,user_psw,user_tags) values (
         #{item.user_id},#{item.user_mail},#{item.user_name},
         #{item.user_psw},#{item.user_tags})
         on duplicate key update user_id=(user_id),user_mail=(user_mail),

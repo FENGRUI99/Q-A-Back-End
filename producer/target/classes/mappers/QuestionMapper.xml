@@ -15,6 +15,26 @@
         <collection property="commentList" resultMap="comment_listMap"/>
     </resultMap>
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    <resultMap id="QuestionList1" type="com.example.demo.pojo.Question">
+        <id property="question_id" column="question_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="user_id" column="user_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="user_name" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="question_description" column="question_description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="question_detail" column="question_detail" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="question_tags" column="question_tags" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="number_comment" column="number_comment" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        <result property="likes" column="likes" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        <result property="like_flag" column="like_flag" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="time" column="time" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <collection property="commentList" resultMap="comment_listMap"/>
+    </resultMap>
+
+>>>>>>> eba82a3c8c4d5f57a06c49f2d0c4ede21fe3f5e7
+>>>>>>> 40826614460ae7d1d4b2a8af1af9d796fbf3b0f5
     <resultMap id="comment_listMap" type="com.example.demo.pojo.Comment">
         <id property="comment_id" column="comment_id" jdbcType="BIGINT"/>
         <result property="user_id" column="user_id" jdbcType="VARCHAR"/>
@@ -24,9 +44,21 @@
         <result property="creat_time" column="creat_time" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
+<<<<<<< HEAD
     <select id="listQuestion" resultMap="QuestionList">
         select distinct q.question_id, q.user_id, q.user_name,q.question_description,
         q.question_detail, q.question_tags,q.number_comment, q.likes ,
+=======
+<<<<<<< HEAD
+    <select id="listQuestion" resultMap="QuestionList">
+        select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,
+=======
+    <select id="listQuestion" resultMap="QuestionList1">
+        select distinct q.question_id, q.user_id, q.user_name,q.question_description,
+        q.question_detail, q.question_tags,q.number_comment, q.likes ,0 as 'like_flag',
+>>>>>>> eba82a3c8c4d5f57a06c49f2d0c4ede21fe3f5e7
+>>>>>>> 40826614460ae7d1d4b2a8af1af9d796fbf3b0f5
         (case when Hour(TIMEDIFF(NOW(),q.create_time)) &lt; 1
         then CONCAT(MINUTE((TIMEDIFF(NOW(),q.create_time))),' minute ago')
         when floor(Hour(TIMEDIFF(NOW(),q.create_time))) &lt;24
@@ -110,8 +142,18 @@
     </select>
 
 
+<<<<<<< HEAD
     <update id="likesAsync" parameterType="java.lang.Integer">
         update question q set q.likes=#{likes,jdbcType=TINYINT} where q.question_id=#{id,jdbcType=TINYINT}
+=======
+<<<<<<< HEAD
+    <update id="likesAsync" parameterType="java.lang.Integer">
+        update question q set q.likes=#{likes,jdbcType=TINYINT} where q.question_id=#{id,jdbcType=TINYINT}
+=======
+    <update id="likesAsync" parameterType="java.lang.String">
+        update question q set q.likes=#{likes,jdbcType=VARCHAR} where q.question_id=#{id,jdbcType=VARCHAR}
+>>>>>>> eba82a3c8c4d5f57a06c49f2d0c4ede21fe3f5e7
+>>>>>>> 40826614460ae7d1d4b2a8af1af9d796fbf3b0f5
     </update>
 
 
