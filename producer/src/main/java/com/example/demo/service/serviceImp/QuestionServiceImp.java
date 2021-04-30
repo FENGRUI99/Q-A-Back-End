@@ -69,7 +69,7 @@ public class QuestionServiceImp implements QuestionService {
             //开始搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
-
+            //打包
             ArrayList<Map<String,Object>> list = new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 list.add(documentFields.getSourceAsMap());
@@ -87,10 +87,22 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public ResponseMessage listbyTag(String tags) {
         try {
-            tags.replace(',','%');
-            List<Question> questions=mapper.listbyTag(tags);
-             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(questions);
+            SearchRequest searchRequest = new SearchRequest("questiones");
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+            MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",tags);
+            searchSourceBuilder.query(termQueryBuilder);
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                list.add(documentFields.getSourceAsMap());
+            }
+            ResponseMessage responseMessage=ResponseMessage.success();
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
