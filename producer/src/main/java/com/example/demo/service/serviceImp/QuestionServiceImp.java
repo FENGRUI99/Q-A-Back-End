@@ -65,12 +65,13 @@ public class QuestionServiceImp implements QuestionService {
             //实现高亮
             HighlightBuilder highlightBuilder = new HighlightBuilder();
             highlightBuilder.field("question_description");
-            highlightBuilder.requireFieldMatch(false);  //多个单词高亮的话，要把这个设置为trues
-            highlightBuilder.preTags("<font color='#dd4b39'>");
-            highlightBuilder.postTags("</font>");
+            highlightBuilder.field("question_detail");
+            highlightBuilder.requireFieldMatch(true);  //多个单词高亮的话，要把这个设置为trues
+            highlightBuilder.preTags("<span style=\"color:'#dd4b39\">");
+            highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
 
-            MultiMatchQueryBuilder termQueryBuilder = QueryBuilders.multiMatchQuery(target,"question_description" ,"question_details");
+            MultiMatchQueryBuilder termQueryBuilder = QueryBuilders.multiMatchQuery(target,"question_description" ,"question_detail");
             searchSourceBuilder.query(termQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
@@ -81,7 +82,7 @@ public class QuestionServiceImp implements QuestionService {
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 Map<String, HighlightField> highlight =documentFields.getHighlightFields();
                 HighlightField title=highlight.get("question_description");
-                HighlightField detail=highlight.get("question_details");
+                HighlightField detail=highlight.get("question_detail");
                 Map<String, Object> source=documentFields.getSourceAsMap();
                 if(title!=null){
                     Text[] fragments=title.fragments();
@@ -103,7 +104,6 @@ public class QuestionServiceImp implements QuestionService {
             }
             ResponseMessage responseMessage=ResponseMessage.success();
             responseMessage.setEntity(list);
-            System.out.println(list.size());
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
