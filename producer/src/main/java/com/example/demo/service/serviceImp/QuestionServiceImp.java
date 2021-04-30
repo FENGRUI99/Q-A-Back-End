@@ -16,6 +16,7 @@ import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,9 +55,18 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            //匹配目标
             MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_description",target);
             searchSourceBuilder.query(termQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+            //实现高亮
+            HighlightBuilder highlightBuilder = new HighlightBuilder();
+            highlightBuilder.field("question_description");
+            highlightBuilder.requireFieldMatch(false);  //多个单词高亮的话，要把这个设置为trues
+            highlightBuilder.preTags("<span style='color:red'>");
+            highlightBuilder.postTags("</span>");
+            searchSourceBuilder.highlighter(highlightBuilder);
+            //开始搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
