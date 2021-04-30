@@ -11,6 +11,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.FuzzyQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -19,6 +20,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -59,9 +61,7 @@ public class QuestionServiceImp implements QuestionService {
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             //匹配目标
 
-            MultiMatchQueryBuilder termQueryBuilder = QueryBuilders.multiMatchQuery(target,"question_description","question_details");
-            searchSourceBuilder.query(termQueryBuilder);
-            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+
             //实现高亮
             HighlightBuilder highlightBuilder = new HighlightBuilder();
             highlightBuilder.field("question_description");
@@ -69,12 +69,27 @@ public class QuestionServiceImp implements QuestionService {
             highlightBuilder.preTags("<font color='#dd4b39'>");
             highlightBuilder.postTags("</font>");
             searchSourceBuilder.highlighter(highlightBuilder);
+
+            MultiMatchQueryBuilder termQueryBuilder = QueryBuilders.multiMatchQuery(target,"question_description" ,"question_details");
+            searchSourceBuilder.query(termQueryBuilder);
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             //打包
             ArrayList<Map<String,Object>> list = new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                Map<String, HighlightField> highlight =documentFields.getHighlightFields();
+                HighlightField title=highlight.get("question_description");
+                Map<String, Object> source=documentFields.getSourceAsMap();
+                if(title!=null){
+                    Text[] fragments=title.fragments();
+                    String newTitle="";
+                    for (Text fragment : fragments) {
+                        newTitle+=fragment;
+                    }
+                    source.put("question_description",newTitle);
+                }
                 list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
