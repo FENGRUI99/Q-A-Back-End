@@ -69,29 +69,29 @@ public class QuestionEs implements Serializable {
         this.pics = pics;
     }
 
-    private Map<String/*comment_id*/,Comment/*评论*/> comments;
+    private Map<String/*comment_id*/,Comment/*评论*/> commentList;
 
     public void addCommentNumber(){
         this.number_comment++;
     }
     public QuestionEs() {
         pics = new ArrayList<>();
-        comments = new HashMap<>();
+        commentList = new HashMap<>();
     }
     public boolean putComment(Comment comment){
         if (comment !=null){
-            comments.put(String.valueOf(comment.getComment_id()),comment);
+            commentList.put(String.valueOf(comment.getComment_id()),comment);
             return true;
         }
         return false;
     }
 
-    public Map<String, Comment> getComments() {
-        return comments;
+    public Map<String, Comment> getCommentList() {
+        return commentList;
     }
 
-    public void setComments(Map<String, Comment> comments) {
-        this.comments = comments;
+    public void commentList(Map<String, Comment> commentList) {
+        this.commentList = commentList;
     }
 
     public String getId() {
