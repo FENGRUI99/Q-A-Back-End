@@ -57,9 +57,12 @@ public class PublishServiceImp implements PublishService {
         rocketMQTemplate.asyncSend("QuestionPublishService", question, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
+
             }
+
             @Override
             public void onException(Throwable throwable) {
+
             }
         });
         return ResponseMessage.success();

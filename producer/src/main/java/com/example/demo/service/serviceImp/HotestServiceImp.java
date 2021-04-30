@@ -5,6 +5,9 @@ import com.example.demo.configuration.Message;
 import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.mapper.QuestionMapper;
 import com.example.demo.service.service.HotestService;
+import com.example.demo.service.service.QuestionPublishToEsService;
+import com.example.demo.service.service.UpdateToEsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +26,8 @@ public class HotestServiceImp implements HotestService {
     @Resource
     QuestionMapper mapper;
 
-
-
+    @Autowired
+    UpdateToEsService UpdateToLikeEsService;
 
     @Override
     public ResponseMessage contributor() {
@@ -92,6 +95,8 @@ public class HotestServiceImp implements HotestService {
                 sum--;
             }
             template.opsForHash().put("question_like",question_id,String.valueOf(sum));
+
+            UpdateToLikeEsService.UpdateToLikeEsService(question_id,sum);
             mapper.likesAsync(question_id,String.valueOf(sum));
             if(template.opsForValue().get("Mylock")==uuid) {
                 System.out.println(1);

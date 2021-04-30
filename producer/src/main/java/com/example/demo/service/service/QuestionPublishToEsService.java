@@ -15,4 +15,5 @@ public interface QuestionPublishToEsService {
     public boolean publishQuestion(Question question);
 
     public boolean publishComment(Comment comment);
+
 }
