@@ -13,11 +13,11 @@
             question_detail = (question_detail), question_tags=(question_tags)
     </insert>
 
-    <insert id="publishComment" parameterType="com.example.demo.pojo.Comment" useGeneratedKeys="true" keyProperty="comment_id">
-        insert into comment(user_id,user_name,comment_detail,question_id)
-        values (#{comment.user_id},#{comment.user_name},#{comment.comment_detail},
+    <insert id="publishComment" parameterType="com.example.demo.pojo.Comment" >
+        insert into comment(comment_id,user_id,user_name,comment_detail,question_id)
+        values (#{comment.comment_id},#{comment.user_id},#{comment.user_name},#{comment.comment_detail},
                 #{comment.question_id})
-            on duplicate key update user_id=(user_id),
+            on duplicate key update comment_id=(comment_id),
                 user_name=(user_name),
                 comment_detail=(comment_detail),
                 question_id = (question_id)

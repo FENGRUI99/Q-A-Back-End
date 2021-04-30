@@ -7,6 +7,7 @@ import com.example.demo.pojo.Question;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +28,8 @@ public class QuestionPublishService implements RocketMQListener<Question> {
 
     @Resource
     PublishMapper mapper;
-
+    @Autowired
+    QuestionPublishToEsService questionPublishToEsService;
     @Override
     public void onMessage(Question question) {
         try {
@@ -40,7 +42,8 @@ public class QuestionPublishService implements RocketMQListener<Question> {
             for (String tag : tags) {
                 template.opsForZSet().incrementScore("question_tags", tag, 1);
             }
-
+            question.setQuestion_id(id);
+            questionPublishToEsService.publishQuestion(question);
         }catch (Exception e) {
           e.printStackTrace();
         }

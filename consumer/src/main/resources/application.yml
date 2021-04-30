@@ -4,6 +4,8 @@ server:
 mybatis:
   mapper-locations: classpath*:mappers/*.xml
   type-aliases-package: com.example.demo.pojo.*
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 spring:
   datasource:
@@ -12,7 +14,6 @@ spring:
     username: root
     password: louder123
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   redis:
     jedis:
       pool:
@@ -23,8 +24,12 @@ spring:
     password: louder123
     port: 6379
     timeout: 5000
-  application:
-    name: louder_consumer
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+
+
 
 rocketmq:
   name-server: 121.5.27.43:9876

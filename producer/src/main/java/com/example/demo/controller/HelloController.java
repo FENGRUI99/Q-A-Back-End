@@ -33,7 +33,6 @@ public class HelloController {
         template.asyncSend("RegisterService", student, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
-
             }
 
             @Override
@@ -53,6 +52,4 @@ public class HelloController {
     public ResponseMessage checkID(@RequestBody() studentInfo student){
         return service.checkID(student.getUser_id());
     }
-
-
 }

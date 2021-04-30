@@ -6,9 +6,11 @@ import com.example.demo.mapper.FIleMapper;
 import com.example.demo.pojo.Comment;
 import com.example.demo.pojo.Question;
 import com.example.demo.service.service.PublishService;
+import com.example.demo.service.service.QuestionPublishToEsService;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,8 @@ public class PublishServiceImp implements PublishService {
 
     @Resource
     FIleMapper mapper;
-
+    @Autowired
+    QuestionPublishToEsService questionPublishToEsService;
     @Override
     public ResponseMessage publishQuestion(Question question, List<String> files) {
         try {
@@ -44,9 +47,9 @@ public class PublishServiceImp implements PublishService {
             System.out.println(id);
             template.opsForList().leftPush("pic_list",id);
             mapper.addPic(id, files);
-//            for (String file : files) {
-//                template.opsForHash().put("pic",id,file);
-//            }
+
+
+            questionPublishToEsService.publishQuestion(question,files);
         }catch (Exception e) {
             e.printStackTrace();
         }
