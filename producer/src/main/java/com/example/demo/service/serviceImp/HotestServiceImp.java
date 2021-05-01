@@ -61,12 +61,19 @@ public class HotestServiceImp implements HotestService {
     public ResponseMessage userLike(String user_id) {
 
         try {
+            int tag=100;
             while(template.opsForList().size("lock")>0){
+                tag--;
+                if(tag==0)
+                    template.expire("lock",1000,TimeUnit.SECONDS);
             }
             if(template.opsForSet().size(user_id+"_likeSet")>0){
                 Set<String> list=template.opsForSet().members(user_id+"_likeSet");
                 ResponseMessage message=ResponseMessage.success();
                 message.setEntity(list);
+                for (String s : list) {
+                    System.out.println(s);
+                }
                 return message;
             }else{
                template.opsForSet().add(user_id+"_likeSet","-1");
@@ -88,6 +95,7 @@ public class HotestServiceImp implements HotestService {
             String question_id=message.getRequest().split(" ")[1];
             int sum= Integer.parseInt(template.opsForHash().get("question_like",question_id).toString());
             if(!template.opsForSet().isMember(user_id + "_likeSet",question_id)) {
+
                 template.opsForSet().add(user_id + "_likeSet",question_id);
                 sum++;
             } else {
