@@ -1,7 +1,8 @@
 package com.example.demo.service.serviceImp;
 
 import com.example.demo.dao.QuestionDao;
-import com.example.demo.pojo.es.QuestionEs;
+
+import com.example.demo.pojo.QuestionEs;
 import com.example.demo.service.service.UpdateToEsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

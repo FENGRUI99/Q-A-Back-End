@@ -19,7 +19,7 @@ public class CommentpublishService implements RocketMQListener<Comment> {
     @Resource
     PublishMapper mapper;
     @Autowired
-    QuestionPublishToEsService questionPublishToEsService;
+    QuestionPublishToEsServiceImpl questionPublishToEsService;
     @Resource
     StringRedisTemplate template;
     @Override

@@ -1,4 +1,4 @@
-package com.example.demo.pojo.es;
+package com.example.demo.pojo;
 
 import com.example.demo.pojo.Comment;
 import org.springframework.data.annotation.Id;
@@ -7,10 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,10 +15,11 @@ import java.util.Map;
  */
 @Document(indexName = "questiones", shards = 1,replicas = 0, refreshInterval = "-1")
 public class QuestionEs implements Serializable {
-    @Id
 
+    @Id
     private String id;
 
+    @Field(type = FieldType.Keyword)
     String question_id;
 
     public String getQuestion_id() {
@@ -32,25 +30,28 @@ public class QuestionEs implements Serializable {
         this.question_id = question_id;
     }
 
-
+    //user_id
     @Field(type = FieldType.Keyword)
     String user_id;
 
 
+
     @Field(type=FieldType.Text,index=false)
     String user_name;
-
+    //question_description
     @Field(type=FieldType.Text, analyzer="ik_max_word")
     String question_description;
-
+    //question_detail
     @Field(type=FieldType.Text, analyzer="ik_max_word")
     String question_detail;
-
+    //question_tags
     @Field(type = FieldType.Keyword)
     String question_tags;
+    //number of comment
 
     @Field(type=FieldType.Long,index = false)
     int number_comment;
+    //多少个点赞
 
     @Field(type=FieldType.Long,index = false)
     int likes;
@@ -59,24 +60,29 @@ public class QuestionEs implements Serializable {
     String create_time;
 
 
-    List<String> pics ;
 
-    public List<String> getPics() {
-        return pics;
-    }
-
-    public void setPics(List<String> pics) {
-        this.pics = pics;
-    }
 
     private Map<String/*comment_id*/,Comment/*评论*/> commentList;
+
+    public QuestionEs(String id, String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment, int likes, String create_time, Map<String, Comment> commentList) {
+        this.id = id;
+        this.question_id = question_id;
+        this.user_id = user_id;
+        this.user_name = user_name;
+        this.question_description = question_description;
+        this.question_detail = question_detail;
+        this.question_tags = question_tags;
+        this.number_comment = number_comment;
+        this.likes = likes;
+        this.create_time = create_time;
+        this.commentList = commentList;
+    }
 
     public void addCommentNumber(){
         this.number_comment++;
     }
     public QuestionEs() {
-        pics = new ArrayList<>();
-        commentList = new HashMap<>();
+       commentList = new HashMap<>();
     }
     public boolean putComment(Comment comment){
         if (comment !=null){
@@ -90,7 +96,7 @@ public class QuestionEs implements Serializable {
         return commentList;
     }
 
-    public void commentList(Map<String, Comment> commentList) {
+    public void setCommentList(Map<String, Comment> commentList) {
         this.commentList = commentList;
     }
 

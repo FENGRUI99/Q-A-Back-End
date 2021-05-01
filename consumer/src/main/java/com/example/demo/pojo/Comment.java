@@ -1,5 +1,7 @@
 package com.example.demo.pojo;
 
+
+
 import java.io.Serializable;
 
 public class Comment implements Serializable {
@@ -8,10 +10,15 @@ public class Comment implements Serializable {
     }
 
     int comment_id;
+
     String user_id;
+
     String user_name;
+
     String comment_detail;
+
     String question_id;
+
     String create_time;
 
     public Comment(String user_id, String user_name, String comment_detail, String question_id) {

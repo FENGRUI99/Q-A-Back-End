@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -58,12 +59,10 @@ public class PublishServiceImp implements PublishService {
         rocketMQTemplate.asyncSend("QuestionPublishService", question, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
-
+                System.out.println(222);
             }
-
             @Override
             public void onException(Throwable throwable) {
-
             }
         });
         return ResponseMessage.success();

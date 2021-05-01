@@ -1,11 +1,8 @@
 package com.example.demo.pojo;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.List;
-
-
 
 public class Question implements Serializable {
 
@@ -46,17 +43,50 @@ public class Question implements Serializable {
         this.commentList = commentList;
     }
 
-    String question_id;
-    String user_id;
-    String user_name;
-    String question_description;
-    String question_detail;
-    String question_tags;
-    int number_comment;
-    int likes;
-    String time;
-    List<Comment> commentList;
 
+    String question_id;
+
+    String user_id;
+
+    String user_name;
+
+    String question_description;
+
+    String question_detail;
+
+    String question_tags;
+
+    int number_comment;
+
+    int likes;
+    String like_flag;
+
+    public Question(String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment, int likes, String like_flag, String time, List<Comment> commentList) {
+        this.question_id = question_id;
+        this.user_id = user_id;
+        this.user_name = user_name;
+        this.question_description = question_description;
+        this.question_detail = question_detail;
+        this.question_tags = question_tags;
+        this.number_comment = number_comment;
+        this.likes = likes;
+        this.like_flag = like_flag;
+        this.time = time;
+        this.commentList = commentList;
+    }
+
+    public String getLike_flag() {
+        return like_flag;
+    }
+
+    public void setLike_flag(String like_flag) {
+        this.like_flag = like_flag;
+    }
+
+
+    String time;
+
+    List<Comment> commentList;
 
 
     public String getQuestion_id() { return question_id; }
@@ -80,7 +110,6 @@ public class Question implements Serializable {
     public void setQuestion_description(String question_description) {
         this.question_description = question_description;
     }
-
 
     public String getQuestion_detail() {
         return question_detail;

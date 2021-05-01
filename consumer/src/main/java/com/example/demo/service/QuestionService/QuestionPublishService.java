@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -28,13 +30,20 @@ public class QuestionPublishService implements RocketMQListener<Question> {
 
     @Resource
     PublishMapper mapper;
+
     @Autowired
-    QuestionPublishToEsService questionPublishToEsService;
+    QuestionPublishToEsServiceImpl questionPublishToEsService;
+
     @Override
     public void onMessage(Question question) {
         try {
             Date date=new Date();
             String id=String.valueOf(date.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            question.setTime(sdf.format(date));
+            question.setQuestion_id(id);
+            questionPublishToEsService.publishQuestion(question);
+            System.out.println(12);
             template.opsForHash().put("question_like", id, "0");
             template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
             mapper.publishQuestion(question,id);
@@ -42,8 +51,8 @@ public class QuestionPublishService implements RocketMQListener<Question> {
             for (String tag : tags) {
                 template.opsForZSet().incrementScore("question_tags", tag, 1);
             }
-            question.setQuestion_id(id);
-            questionPublishToEsService.publishQuestion(question);
+
+            System.out.println(1);
         }catch (Exception e) {
           e.printStackTrace();
         }

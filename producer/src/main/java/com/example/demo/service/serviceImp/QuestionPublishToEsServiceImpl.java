@@ -3,7 +3,7 @@ package com.example.demo.service.serviceImp;
 import com.example.demo.dao.QuestionDao;
 import com.example.demo.pojo.Comment;
 import com.example.demo.pojo.Question;
-import com.example.demo.pojo.es.QuestionEs;
+import com.example.demo.pojo.QuestionEs;
 import com.example.demo.service.service.QuestionPublishToEsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
     public boolean publishQuestion(Question question){
         if (question!=null){
             QuestionEs questionEs = new QuestionEs();
+            questionEs.setQuestion_id(question.getQuestion_id());
             questionEs.setId(question.getQuestion_id());
             questionEs.setUser_id(question.getUser_id());
             questionEs.setUser_name(question.getUser_name());
