@@ -57,11 +57,10 @@ public class PublishServiceImp implements PublishService {
     }
 
     @Override
-    public ResponseMessage publishQuestion(Question question) throws ParseException {
+    public ResponseMessage publishQuestion(Question question) {
         Date date=new Date();
         String id=String.valueOf(date.getTime());
         question.setTime(date.getTime());
-        System.out.println(question.getTime());
         question.setQuestion_id(id);
         questionPublishToEsService.publishQuestion(question);
         template.opsForHash().put("question_like", id, "0");

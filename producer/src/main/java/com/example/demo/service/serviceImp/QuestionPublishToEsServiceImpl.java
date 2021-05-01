@@ -23,10 +23,9 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
 
 
 
-    public boolean publishQuestion(Question question) throws ParseException {
+    public boolean publishQuestion(Question question) {
         if (question!=null){
             QuestionEs questionEs = new QuestionEs();
-            System.out.println(question.getQuestion_id());
             questionEs.setQuestion_id(question.getQuestion_id());
             questionEs.setId(question.getQuestion_id());
             questionEs.setUser_id(question.getUser_id());
@@ -36,7 +35,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
             questionEs.setQuestion_tags(question.getQuestion_tags());
             questionEs.setNumber_comment(question.getNumber_comment());
             questionEs.setLike_flag(0);
-            questionEs.setLikes(question.getLikes());
+            questionEs.setLikes(0);
             questionEs.setCreate_time(question.getTime());
             Map<String,Comment> map=new HashMap<>();
             questionEs.setCommentList(map);

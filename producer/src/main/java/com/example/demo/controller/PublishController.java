@@ -63,7 +63,7 @@ public class PublishController {
 
     @ApiOperation(value = "public question API",httpMethod = "POST")
     @RequestMapping("/publishQuestion")
-    public ResponseMessage publishQuetion(@RequestBody()Question question) throws IOException, ParseException {
+    public ResponseMessage publishQuetion(@RequestBody()Question question)  {
         return service.publishQuestion(question);
     }
 

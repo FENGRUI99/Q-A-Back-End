@@ -12,7 +12,7 @@ import java.util.List;
 public interface PublishService {
 
     ResponseMessage publishQuestion(Question question, List<String> files);
-    ResponseMessage publishQuestion(Question question) throws ParseException;
+    ResponseMessage publishQuestion(Question question) ;
     ResponseMessage publishComment(Comment comment);
 
 }

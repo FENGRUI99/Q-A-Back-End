@@ -71,7 +71,7 @@ public class QuestionEs implements Serializable {
     @Field(type=FieldType.Long,index = false)
     int like_flag;
 
-    @Field(type=FieldType.Date, format = DateFormat.date_time)
+    @Field(type=FieldType.Long)
     Long create_time;
 
 

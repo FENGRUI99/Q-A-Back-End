@@ -13,7 +13,7 @@ import java.util.List;
 public interface QuestionPublishToEsService {
 
 
-    public boolean publishQuestion(Question question) throws ParseException;
+    public boolean publishQuestion(Question question) ;
 
     public boolean publishComment(Comment comment);
 
