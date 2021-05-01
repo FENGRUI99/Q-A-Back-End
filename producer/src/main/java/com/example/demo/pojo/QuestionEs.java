@@ -50,10 +50,10 @@ public class QuestionEs implements Serializable {
     @Field(type=FieldType.Text,index=false)
     String user_name;
     //question_description
-    @Field(type=FieldType.Text, analyzer="standard")
+    @Field(type=FieldType.Text, analyzer="min_gram")
     String question_description;
     //question_detail
-    @Field(type=FieldType.Text, analyzer="standard")
+    @Field(type=FieldType.Text, analyzer="min_gram")
     String question_detail;
     //question_tags
     @Field(type = FieldType.Keyword)
@@ -68,18 +68,18 @@ public class QuestionEs implements Serializable {
     int likes;
 
     //是否点赞
-    @Field(type=FieldType.Long,index = false)
-    int like_flag;
+    @Field(type=FieldType.Text,index = false)
+    String like_flag;
 
     @Field(type=FieldType.Long)
     Long create_time;
 
 
-    public int getLike_flag() {
+    public String getLike_flag() {
         return like_flag;
     }
 
-    public void setLike_flag(int like_flag) {
+    public void setLike_flag(String like_flag) {
         this.like_flag = like_flag;
     }
 

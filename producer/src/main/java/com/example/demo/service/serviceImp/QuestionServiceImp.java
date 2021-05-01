@@ -26,10 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.naming.directory.SearchControls;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -58,12 +55,12 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                list.add(documentFields.getSourceAsMap());
+                map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(list);
+            responseMessage.setEntity(map);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,7 +91,7 @@ public class QuestionServiceImp implements QuestionService {
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             //打包
-            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 Map<String, HighlightField> highlight =documentFields.getHighlightFields();
                 HighlightField title=highlight.get("question_description");
@@ -116,10 +113,10 @@ public class QuestionServiceImp implements QuestionService {
                     }
                     source.put("question_detail",newTitle);
                 }
-                list.add(documentFields.getSourceAsMap());
+                map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(list);
+            responseMessage.setEntity(map);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,12 +140,13 @@ public class QuestionServiceImp implements QuestionService {
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
+            Map<String,Map<String,Object>> map=new HashMap<>();
             ArrayList<Map<String,Object>> list = new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                list.add(documentFields.getSourceAsMap());
+                map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(list);
+            responseMessage.setEntity(map);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,12 +169,12 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                list.add(documentFields.getSourceAsMap());
+                map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(list);
+            responseMessage.setEntity(map);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -199,8 +197,9 @@ public class QuestionServiceImp implements QuestionService {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             ArrayList<Map<String,Object>> list = new ArrayList<>();
+            Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                list.add(documentFields.getSourceAsMap());
+                map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
             responseMessage.setEntity(list);
@@ -226,8 +225,9 @@ public class QuestionServiceImp implements QuestionService {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             ArrayList<Map<String,Object>> list = new ArrayList<>();
+            Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                list.add(documentFields.getSourceAsMap());
+                map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
             responseMessage.setEntity(list);
@@ -254,8 +254,9 @@ public class QuestionServiceImp implements QuestionService {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             ArrayList<Map<String,Object>> list = new ArrayList<>();
+            Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                list.add(documentFields.getSourceAsMap());
+                map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
             responseMessage.setEntity(list);

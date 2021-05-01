@@ -107,7 +107,6 @@ public class HotestServiceImp implements HotestService {
             UpdateToLikeEsService.UpdateToLikeEsService(question_id,sum);
             mapper.likesAsync(question_id,String.valueOf(sum));
             if(template.opsForValue().get("Mylock").equals(uuid)) {
-                System.out.println(1);
                 template.expire("Mylock", 0, TimeUnit.NANOSECONDS);
             }
             template.opsForList().rightPop("lock");
