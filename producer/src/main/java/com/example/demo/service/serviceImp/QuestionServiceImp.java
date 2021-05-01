@@ -47,9 +47,23 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public ResponseMessage listQuestion(String id) {
         try {
-            List<Question> question = mapper.listQuestion(id);
+            SearchRequest searchRequest = new SearchRequest("questiones");
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+            FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment");
+            QueryBuilder builder=QueryBuilders.matchAllQuery();
+
+            searchSourceBuilder.query(builder).sort(fsb);
+
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                list.add(documentFields.getSourceAsMap());
+            }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(question);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
