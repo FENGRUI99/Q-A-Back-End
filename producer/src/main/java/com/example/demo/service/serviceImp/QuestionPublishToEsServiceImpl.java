@@ -35,6 +35,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
             questionEs.setQuestion_detail(question.getQuestion_detail());
             questionEs.setQuestion_tags(question.getQuestion_tags());
             questionEs.setNumber_comment(question.getNumber_comment());
+            questionEs.setLike_flag(0);
             questionEs.setLikes(question.getLikes());
             questionEs.setCreate_time(question.getTime());
             Map<String,Comment> map=new HashMap<>();

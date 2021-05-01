@@ -37,8 +37,9 @@ public class PublishServiceImp implements PublishService {
     public ResponseMessage publishQuestion(Question question, List<String> files) {
         try {
             Date date=new Date();
-            String id=String.valueOf(date.getTime())+"l";
-            template.opsForHash().put("question_like", String.valueOf(id), "0");
+            String id=String.valueOf(date.getTime());
+            question.setQuestion_id(id);
+            template.opsForHash().put("question_like", id, "0");
             template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
             mapper.publishQuestion(question,id);
             String[] tags = question.getQuestion_tags().split(",");
@@ -62,7 +63,6 @@ public class PublishServiceImp implements PublishService {
         question.setTime(date.getTime());
         System.out.println(question.getTime());
         question.setQuestion_id(id);
-        System.out.println(question.getQuestion_id());
         questionPublishToEsService.publishQuestion(question);
         template.opsForHash().put("question_like", id, "0");
         template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
