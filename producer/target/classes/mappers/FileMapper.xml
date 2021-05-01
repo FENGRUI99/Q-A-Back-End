@@ -21,19 +21,19 @@
     </select>
 
     <insert id="publishQuestion" parameterType="com.example.demo.pojo.Question" >
-        insert into question(question_id,user_id,user_name,question_description,question_detail,question_tags)
+        insert into question(question_id,user_id,user_name,question_description,question_detail,question_tags,create_time)
          values (#{id},#{question.user_id},#{question.user_name},#{question.question_description},
-        #{question.question_detail},#{question.question_tags})
+        #{question.question_detail},#{question.question_tags},#{question.time})
             on duplicate key update user_id=(user_id),
             user_name=(user_name),
             question_description=(question_description),
-            question_detail = (question_detail), question_tags=(question_tags)
+            question_detail = (question_detail), question_tags=(question_tags),create_time=(create_time)
     </insert>
 
     <insert id="publishComment" parameterType="com.example.demo.pojo.Comment" >
-        insert into comment(comment_id,user_id,user_name,comment_detail,question_id)
+        insert into comment(comment_id,user_id,user_name,comment_detail,question_id,create_time)
         values (#{comment.comment_id},#{comment.user_id},#{comment.user_name},#{comment.comment_detail},
-                #{comment.question_id})
+                #{comment.question_id},#{comment.create_time})
             on duplicate key update comment_id=(comment_id),
                 user_name=(user_name),
                 comment_detail=(comment_detail),
