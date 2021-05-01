@@ -24,15 +24,6 @@ public class CommentpublishService implements RocketMQListener<Comment> {
     StringRedisTemplate template;
     @Override
     public void onMessage(Comment comment) {
-        try{
-            Long commentId = template.boundValueOps("CommentId").increment(1);
 
-            comment.setComment_id(commentId.intValue());
-            mapper.publishComment(comment);
-            mapper.commentIncrement(comment.getQuestion_id());
-             questionPublishToEsService.publishComment(comment);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

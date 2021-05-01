@@ -15,4 +15,6 @@ public interface FIleMapper {
     List<Integer> getId( @Param("question")Question question);
     List<String> getImage(@Param("id")String id);
     void publishQuestion(@Param("question") Question publish,@Param("id") String id);
+    void publishComment(@Param("comment") Comment comment);
+    void commentIncrement(@Param("id") String question_id);
 }

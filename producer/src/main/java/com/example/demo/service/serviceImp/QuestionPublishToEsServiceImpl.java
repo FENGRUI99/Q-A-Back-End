@@ -8,8 +8,8 @@ import com.example.demo.service.service.QuestionPublishToEsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
@@ -25,6 +25,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
     public boolean publishQuestion(Question question){
         if (question!=null){
             QuestionEs questionEs = new QuestionEs();
+            System.out.println(question.getQuestion_id());
             questionEs.setQuestion_id(question.getQuestion_id());
             questionEs.setId(question.getQuestion_id());
             questionEs.setUser_id(question.getUser_id());
@@ -35,7 +36,8 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
             questionEs.setNumber_comment(question.getNumber_comment());
             questionEs.setLikes(question.getLikes());
             questionEs.setCreate_time(question.getTime());
-
+            Map<String,Comment> map=new HashMap<>();
+            questionEs.setCommentList(map);
             questionDao.save(questionEs);
             return true;
         }
@@ -52,6 +54,12 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
         if (!result){
             throw new RuntimeException("Comment on failure");
         }
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        comment.setCreate_time(sdf.format(date));
+        Map<String,Comment> commentMap=questionEs.getCommentList();
+        commentMap.put(String.valueOf(comment.getComment_id()),comment);
+        questionEs.setCommentList(commentMap);
         questionEs.addCommentNumber();
         questionDao.save(questionEs);
 

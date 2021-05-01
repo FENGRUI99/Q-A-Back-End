@@ -1,11 +1,11 @@
 package com.example.demo.service.serviceImp;
-
-
 import com.example.demo.configuration.ResponseMessage;
+import com.example.demo.dao.QuestionDao;
 import com.example.demo.mapper.QuestionMapper;
 import com.example.demo.pojo.Question;
+import com.example.demo.pojo.QuestionEs;
 import com.example.demo.service.service.QuestionService;
-import org.apache.lucene.index.Term;
+import com.google.common.collect.Lists;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -13,14 +13,15 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.index.query.FuzzyQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.MultiMatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,6 +40,9 @@ public class QuestionServiceImp implements QuestionService {
 
     @Resource
     RestHighLevelClient restHighLevelClient;
+
+    @Resource
+    QuestionDao dao;
 
     @Override
     public ResponseMessage listQuestion(String id) {
@@ -59,8 +63,6 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-            //匹配目标
-
 
             //实现高亮
             HighlightBuilder highlightBuilder = new HighlightBuilder();
@@ -70,7 +72,7 @@ public class QuestionServiceImp implements QuestionService {
             highlightBuilder.preTags("<span style=\"color:'#dd4b39\">");
             highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
-
+            //匹配目标
             MultiMatchQueryBuilder termQueryBuilder = QueryBuilders.multiMatchQuery(target,"question_description" ,"question_detail");
             searchSourceBuilder.query(termQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
@@ -118,8 +120,10 @@ public class QuestionServiceImp implements QuestionService {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
+            FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.ASC);
+
             MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",tags);
-            searchSourceBuilder.query(termQueryBuilder);
+            searchSourceBuilder.query(termQueryBuilder).sort(fsb);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 
             searchRequest.source(searchSourceBuilder);
@@ -141,12 +145,24 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public ResponseMessage answerSort() {
         try {
-            GetIndexRequest request = new GetIndexRequest("question");
-            boolean exists = restHighLevelClient.indices().exists(request, RequestOptions.DEFAULT);
 
-            List<Question>   questions = mapper.answerSort();
+            SearchRequest searchRequest = new SearchRequest("questiones");
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+            FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.DESC);
+            QueryBuilder builder=QueryBuilders.matchAllQuery();
+
+            searchSourceBuilder.query(builder).sort(fsb);
+
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                list.add(documentFields.getSourceAsMap());
+            }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(questions);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,9 +186,23 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public ResponseMessage likesSort() {
         try {
-            List<Question>   questions = mapper.likesSort();
+            SearchRequest searchRequest = new SearchRequest("questiones");
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+            FieldSortBuilder fsb= SortBuilders.fieldSort("likes").order(SortOrder.DESC);
+            QueryBuilder builder=QueryBuilders.matchAllQuery();
+
+            searchSourceBuilder.query(builder).sort(fsb);
+
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                list.add(documentFields.getSourceAsMap());
+            }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(questions);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();

@@ -30,8 +30,10 @@ public class PublishServiceImp implements PublishService {
 
     @Resource
     FIleMapper mapper;
+
     @Autowired
     QuestionPublishToEsService questionPublishToEsService;
+
     @Override
     public ResponseMessage publishQuestion(Question question, List<String> files) {
         try {
@@ -56,31 +58,46 @@ public class PublishServiceImp implements PublishService {
 
     @Override
     public ResponseMessage publishQuestion(Question question) {
-        rocketMQTemplate.asyncSend("QuestionPublishService", question, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-                System.out.println(222);
-            }
-            @Override
-            public void onException(Throwable throwable) {
-            }
-        });
+        Date date=new Date();
+        String id=String.valueOf(date.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        question.setTime(sdf.format(date));
+        question.setQuestion_id(id);
+        System.out.println(question.getQuestion_id());
+        questionPublishToEsService.publishQuestion(question);
+        template.opsForHash().put("question_like", id, "0");
+        template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
+        mapper.publishQuestion(question,id);
+        String[] tags = question.getQuestion_tags().split(",");
+        for (String tag : tags) {
+            template.opsForZSet().incrementScore("question_tags", tag, 1);
+        }
+
         return ResponseMessage.success();
     }
 
     @Override
     public ResponseMessage publishComment(Comment comment) {
-        rocketMQTemplate.asyncSend("CommentPublishService", comment, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                System.out.println("error");
-            }
-        });
+        try{
+            Long commentId = template.boundValueOps("CommentId").increment(1);
+            comment.setComment_id(commentId.intValue());
+            mapper.publishComment(comment);
+            mapper.commentIncrement(comment.getQuestion_id());
+            questionPublishToEsService.publishComment(comment);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        rocketMQTemplate.asyncSend("CommentPublishService", comment, new SendCallback() {
+//            @Override
+//            public void onSuccess(SendResult sendResult) {
+//
+//            }
+//
+//            @Override
+//            public void onException(Throwable throwable) {
+//                System.out.println("error");
+//            }
+//        });
         return ResponseMessage.success();
     }
 

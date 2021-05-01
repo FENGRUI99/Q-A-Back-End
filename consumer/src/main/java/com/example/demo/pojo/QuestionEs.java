@@ -1,6 +1,6 @@
 package com.example.demo.pojo;
 
-import com.example.demo.pojo.Comment;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;

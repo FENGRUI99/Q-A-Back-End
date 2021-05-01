@@ -29,4 +29,19 @@
             question_description=(question_description),
             question_detail = (question_detail), question_tags=(question_tags)
     </insert>
+
+    <insert id="publishComment" parameterType="com.example.demo.pojo.Comment" >
+        insert into comment(comment_id,user_id,user_name,comment_detail,question_id)
+        values (#{comment.comment_id},#{comment.user_id},#{comment.user_name},#{comment.comment_detail},
+                #{comment.question_id})
+            on duplicate key update comment_id=(comment_id),
+                user_name=(user_name),
+                comment_detail=(comment_detail),
+                question_id = (question_id)
+    </insert>
+
+    <update id="commentIncrement" parameterType="java.lang.String" >
+        update question set number_comment=number_comment+1 where question_id =#{id}
+    </update>
+
 </mapper>
