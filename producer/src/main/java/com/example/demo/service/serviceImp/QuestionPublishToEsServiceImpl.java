@@ -8,6 +8,7 @@ import com.example.demo.service.service.QuestionPublishToEsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
 
 
 
-    public boolean publishQuestion(Question question){
+    public boolean publishQuestion(Question question) throws ParseException {
         if (question!=null){
             QuestionEs questionEs = new QuestionEs();
             System.out.println(question.getQuestion_id());

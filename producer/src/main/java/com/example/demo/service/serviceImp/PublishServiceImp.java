@@ -7,14 +7,13 @@ import com.example.demo.pojo.Comment;
 import com.example.demo.pojo.Question;
 import com.example.demo.service.service.PublishService;
 import com.example.demo.service.service.QuestionPublishToEsService;
-import org.apache.rocketmq.client.producer.SendCallback;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -57,11 +56,11 @@ public class PublishServiceImp implements PublishService {
     }
 
     @Override
-    public ResponseMessage publishQuestion(Question question) {
+    public ResponseMessage publishQuestion(Question question) throws ParseException {
         Date date=new Date();
         String id=String.valueOf(date.getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        question.setTime(sdf.format(date));
+        question.setTime(date.getTime());
+        System.out.println(question.getTime());
         question.setQuestion_id(id);
         System.out.println(question.getQuestion_id());
         questionPublishToEsService.publishQuestion(question);

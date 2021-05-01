@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +63,7 @@ public class PublishController {
 
     @ApiOperation(value = "public question API",httpMethod = "POST")
     @RequestMapping("/publishQuestion")
-    public ResponseMessage publishQuetion(@RequestBody()Question question) throws IOException {
+    public ResponseMessage publishQuetion(@RequestBody()Question question) throws IOException, ParseException {
         return service.publishQuestion(question);
     }
 

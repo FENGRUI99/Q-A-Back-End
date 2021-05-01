@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,17 +26,17 @@ public class Question implements Serializable {
         this.question_detail = question_detail;
     }
 
-    public String getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
     public Question(String question_id, String user_id, String user_name, String question_description,
                     String question_detail, String question_tags,
-                    int number_comment, int likes, String time, List<Comment> commentList) {
+                    int number_comment, int likes, Long time, List<Comment> commentList) {
         this.question_id = question_id;
         this.user_id = user_id;
         this.user_name = user_name;
@@ -66,7 +67,8 @@ public class Question implements Serializable {
     int likes;
     String like_flag;
 
-    public Question(String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment, int likes, String like_flag, String time, List<Comment> commentList) {
+    public Question(String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment,
+                    int likes, String like_flag, Long time, List<Comment> commentList) {
         this.question_id = question_id;
         this.user_id = user_id;
         this.user_name = user_name;
@@ -89,7 +91,7 @@ public class Question implements Serializable {
     }
 
     @ApiModelProperty(value = "time")
-    String time;
+    Long time;
     @ApiModelProperty(value = "commentList")
     List<Comment> commentList;
 

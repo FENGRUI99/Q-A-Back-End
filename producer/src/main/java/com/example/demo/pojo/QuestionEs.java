@@ -1,11 +1,14 @@
 package com.example.demo.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,15 +67,18 @@ public class QuestionEs implements Serializable {
     @Field(type=FieldType.Long,index = false)
     int likes;
 
-    @Field(type=FieldType.Keyword)
-    String create_time;
+    @Field(type=FieldType.Date, format = DateFormat.date_time)
+    Long create_time;
 
 
 
 
     private Map<String/*comment_id*/,Comment/*评论*/> commentList;
 
-    public QuestionEs(String id, String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment, int likes, String create_time, Map<String, Comment> commentList) {
+    public QuestionEs(String id, String question_id, String user_id, String user_name,
+                      String question_description, String question_detail,
+                      String question_tags, int number_comment, int likes,
+                      Long create_time, Map<String, Comment> commentList) {
         this.id = id;
         this.question_id = question_id;
         this.user_id = user_id;
@@ -172,11 +178,11 @@ public class QuestionEs implements Serializable {
         this.likes = likes;
     }
 
-    public String getCreate_time() {
+    public Long getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(String create_time) {
+    public void setCreate_time(Long create_time) {
         this.create_time = create_time;
     }
 }

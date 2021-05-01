@@ -173,9 +173,23 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public ResponseMessage timeSort() {
         try {
-            List<Question>   questions = mapper.timeSort();
+            SearchRequest searchRequest = new SearchRequest("questiones");
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+            FieldSortBuilder fsb= SortBuilders.fieldSort("create_time").order(SortOrder.DESC);
+            QueryBuilder builder=QueryBuilders.matchAllQuery();
+
+            searchSourceBuilder.query(builder).sort(fsb);
+
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                list.add(documentFields.getSourceAsMap());
+            }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(questions);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -213,13 +227,24 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public ResponseMessage relevant(String question_tags) {
         try {
-            String [] temp = question_tags.split("\\s+");
-            Random rand = new Random();
-            int x = rand.nextInt(temp.length);
-            String relevant = temp[x];
-            List<Question> questions = mapper.relevant(relevant);
-            ResponseMessage responseMessage = ResponseMessage.success();
-            responseMessage.setEntity(questions);
+            SearchRequest searchRequest = new SearchRequest("questiones");
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+            FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.ASC);
+
+            MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",question_tags);
+            searchSourceBuilder.query(termQueryBuilder).sort(fsb);
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+            ArrayList<Map<String,Object>> list = new ArrayList<>();
+            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                list.add(documentFields.getSourceAsMap());
+            }
+            ResponseMessage responseMessage=ResponseMessage.success();
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e){
             e.printStackTrace();
