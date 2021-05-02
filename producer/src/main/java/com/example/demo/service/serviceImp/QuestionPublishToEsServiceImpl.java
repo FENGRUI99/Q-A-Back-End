@@ -33,7 +33,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
             questionEs.setQuestion_description(question.getQuestion_description());
             questionEs.setQuestion_detail(question.getQuestion_detail());
             questionEs.setQuestion_tags(question.getQuestion_tags());
-            questionEs.setNumber_comment(question.getNumber_comment());
+            questionEs.setNumber_comment(0);
             questionEs.setLike_flag("0");
             questionEs.setLikes(0);
             questionEs.setCreate_time(question.getTime());

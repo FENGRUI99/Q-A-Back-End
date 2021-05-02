@@ -85,21 +85,25 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
             //实现高亮
             HighlightBuilder highlightBuilder = new HighlightBuilder();
             highlightBuilder.field("question_description");
             highlightBuilder.field("question_detail");
             highlightBuilder.requireFieldMatch(true);  //多个单词高亮的话，要把这个设置为trues
-            highlightBuilder.preTags("<span style=\"color:'#dd4b39\">");
+            highlightBuilder.preTags("<span style=\"color: #A5D6A7\">");
             highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
             //匹配目标
-
             WildcardQueryBuilder termQueryBuilder = QueryBuilders.wildcardQuery("question_detail","*"+target+"*");
                     //QueryBuilders.multiMatchQuery(target,"question_description" ,"question_detail");
             searchSourceBuilder.query(termQueryBuilder);
+            //searchSourceBuilder.query(QueryBuilders.wildcardQuery("question_description","*"+target+"*"));
+            String[] text=target.split(" ");
+            String[] fileds={"question_detail","question_description"};
+
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+            MoreLikeThisQueryBuilder wildcardQueryBuilder= QueryBuilders.moreLikeThisQuery(fileds,text,MoreLikeThisQueryBuilder.Item.EMPTY_ARRAY);
+
             //开始搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
