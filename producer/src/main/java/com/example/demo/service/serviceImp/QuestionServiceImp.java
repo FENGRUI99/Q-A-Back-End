@@ -94,9 +94,8 @@ public class QuestionServiceImp implements QuestionService {
             highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
             //匹配目标
-            WildcardQueryBuilder termQueryBuilder = QueryBuilders.wildcardQuery("question_detail","*"+target+"*");
                     //QueryBuilders.multiMatchQuery(target,"question_description" ,"question_detail");
-            searchSourceBuilder.query(termQueryBuilder);
+
             //searchSourceBuilder.query(QueryBuilders.wildcardQuery("question_description","*"+target+"*"));
             String[] text=target.split(" ");
             String[] fileds={"question_detail","question_description"};
@@ -104,6 +103,7 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             MoreLikeThisQueryBuilder wildcardQueryBuilder= QueryBuilders.moreLikeThisQuery(fileds,text,MoreLikeThisQueryBuilder.Item.EMPTY_ARRAY);
 
+            searchSourceBuilder.query(wildcardQueryBuilder);
             //开始搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
