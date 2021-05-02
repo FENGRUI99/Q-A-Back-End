@@ -36,9 +36,16 @@ public class HelloController {
     @ApiOperation(value = "add new user API",httpMethod = "POST")
     @RequestMapping("/register")
     public ResponseMessage register(@RequestBody studentInfo student, HttpServletRequest request){
-        String ip=getIpAddr(request);
-        if(!student.getCode().equals( template.opsForValue().get(student.getUser_mail()+ip.replace(".","")+"Email_code")))
-            return ResponseMessage.fail("Email verification wrong!");
+        try {
+            String ip = getIpAddr(request);
+            if (template.opsForValue().get(student.getUser_mail() + ip.replace(".", "") + "Email_code") == null) {
+                return ResponseMessage.fail("Code exprie, please try again!");
+            }
+            if (!student.getCode().equals(template.opsForValue().get(student.getUser_mail() + ip.replace(".", "") + "Email_code")))
+                return ResponseMessage.fail("Email verification wrong!");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         RocketMQtemplate.asyncSend("RegisterService", student, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {

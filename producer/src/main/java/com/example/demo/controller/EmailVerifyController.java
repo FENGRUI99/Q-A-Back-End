@@ -35,6 +35,7 @@ public class EmailVerifyController {
         return service.sendEmail(message.getRequest(),ip);
     }
 
+
     public  String getIpAddr(HttpServletRequest request) {
         String ipAddress = null;
         try {
