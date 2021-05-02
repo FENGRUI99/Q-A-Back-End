@@ -36,11 +36,12 @@ public class EmailVerifyServiceImp implements EmailVerifyService {
                 return ResponseMessage.fail();
             String emailServiceCode = UUID.randomUUID().toString().replace("-","").toLowerCase().substring(0,6);
             template.opsForValue().set(user_mail+ip.replace(".","")+"Email_code",emailServiceCode);
-            template.expire(user_mail+"Email_code",15*60, TimeUnit.SECONDS);
+            template.expire(user_mail+"Email_code",60, TimeUnit.SECONDS);
             MimeMessage message=mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setSubject("注册验证码");
-            helper.setText("Almost done! To complete your Louder sign up, we just need to verify your email address. Your verify code is  " + emailServiceCode +
+            helper.setSubject("Greeting from Louder");
+            helper.setText(
+                    "Verification Code: "+ emailServiceCode +  "   \n"+"  Almost done! To complete your Louder sign up, we just need to verify your email address. Your verify code is  "  +
                     " Once verified, you can start using all of Louder's features to explore, ask, and answer questions here.：");
             helper.setFrom(user);
             helper.setTo(user_mail);
