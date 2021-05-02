@@ -7,11 +7,13 @@ import com.example.demo.pojo.QuestionEs;
 import com.example.demo.service.service.QuestionService;
 import com.google.common.collect.Lists;
 import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.text.Text;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
@@ -21,11 +23,20 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.naming.directory.SearchControls;
+import javax.security.auth.kerberos.KerberosTicket;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -84,7 +95,9 @@ public class QuestionServiceImp implements QuestionService {
             highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
             //匹配目标
-            MultiMatchQueryBuilder termQueryBuilder = QueryBuilders.multiMatchQuery(target,"question_description" ,"question_detail");
+
+            WildcardQueryBuilder termQueryBuilder = QueryBuilders.wildcardQuery("question_detail","*"+target+"*");
+                    //QueryBuilders.multiMatchQuery(target,"question_description" ,"question_detail");
             searchSourceBuilder.query(termQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
@@ -202,7 +215,7 @@ public class QuestionServiceImp implements QuestionService {
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(list);
+            responseMessage.setEntity(map);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,13 +237,12 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            ArrayList<Map<String,Object>> list = new ArrayList<>();
             Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(list);
+            responseMessage.setEntity(map);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -253,19 +265,22 @@ public class QuestionServiceImp implements QuestionService {
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            ArrayList<Map<String,Object>> list = new ArrayList<>();
             Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(list);
+            responseMessage.setEntity(map);
             return responseMessage;
         } catch (Exception e){
             e.printStackTrace();
             return ResponseMessage.fail(question_tags);
         }
     }
+
+
+
+
 
 
 }

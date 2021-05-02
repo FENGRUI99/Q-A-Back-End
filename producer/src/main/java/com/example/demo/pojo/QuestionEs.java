@@ -50,10 +50,10 @@ public class QuestionEs implements Serializable {
     @Field(type=FieldType.Text,index=false)
     String user_name;
     //question_description
-    @Field(type=FieldType.Text, analyzer="min_gram")
+    @Field(type=FieldType.Auto, analyzer="ik_smart")
     String question_description;
     //question_detail
-    @Field(type=FieldType.Text, analyzer="min_gram")
+    @Field(type=FieldType.Auto, analyzer="ik_smart")
     String question_detail;
     //question_tags
     @Field(type = FieldType.Keyword)
