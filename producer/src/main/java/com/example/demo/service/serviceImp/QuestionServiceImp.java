@@ -94,16 +94,18 @@ public class QuestionServiceImp implements QuestionService {
             highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
             //匹配目标
-                    //QueryBuilders.multiMatchQuery(target,"question_description" ,"question_detail");
 
-            //searchSourceBuilder.query(QueryBuilders.wildcardQuery("question_description","*"+target+"*"));
-            String[] text=target.split(" ");
-            String[] fileds={"question_detail","question_description"};
 
-            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
-            MoreLikeThisQueryBuilder wildcardQueryBuilder= QueryBuilders.moreLikeThisQuery(fileds,text,MoreLikeThisQueryBuilder.Item.EMPTY_ARRAY);
+            String[] text=new String[1];
+            text[0]=target;
+            String[] fileds={"question_tags"};
+
+
+            WildcardQueryBuilder wildcardQueryBuilder= QueryBuilders.wildcardQuery("question_description","*"+target+"*");
+                    //QueryBuilders.moreLikeThisQuery(fileds,text,null);
 
             searchSourceBuilder.query(wildcardQueryBuilder);
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
