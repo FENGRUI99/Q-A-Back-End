@@ -82,7 +82,9 @@ public class QuestionServiceImp implements QuestionService {
 
     @Override
     public ResponseMessage search(String target) {
+
         try {
+            target=target.toLowerCase();
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             //实现高亮
@@ -94,20 +96,22 @@ public class QuestionServiceImp implements QuestionService {
             highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
             //匹配目标
-
-
-            String[] text=new String[1];
-            text[0]=target;
-            String[] fileds={"question_tags"};
-
-
+            BoolQueryBuilder boolQueryBuilder=QueryBuilders.boolQuery();
+            String[] text=target.split(" ");
+            if(text.length>1){
+                for (String s : text) {
+                    WildcardQueryBuilder wildcardQueryBuilder= QueryBuilders.wildcardQuery("question_description","*"+s+"*");
+                    WildcardQueryBuilder wildcardQueryBuilder1= QueryBuilders.wildcardQuery("question_detail","*"+s+"*");
+                    boolQueryBuilder.should(wildcardQueryBuilder);
+                    boolQueryBuilder.should(wildcardQueryBuilder1);
+                }
+            }else{
             WildcardQueryBuilder wildcardQueryBuilder= QueryBuilders.wildcardQuery("question_description","*"+target+"*");
             WildcardQueryBuilder wildcardQueryBuilder1= QueryBuilders.wildcardQuery("question_detail","*"+target+"*");
-            BoolQueryBuilder boolQueryBuilder=QueryBuilders.boolQuery();
             boolQueryBuilder.should(wildcardQueryBuilder);
             boolQueryBuilder.should(wildcardQueryBuilder1);
                     //QueryBuilders.moreLikeThisQuery(fileds,text,null);
-
+            }
             searchSourceBuilder.query(boolQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
