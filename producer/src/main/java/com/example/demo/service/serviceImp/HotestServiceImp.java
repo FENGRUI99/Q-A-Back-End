@@ -61,12 +61,6 @@ public class HotestServiceImp implements HotestService {
     public ResponseMessage userLike(String user_id) {
 
         try {
-            int tag=100;
-            while(template.opsForList().size("lock")>0){
-                tag--;
-                if(tag==0)
-                    template.expire("lock",1000,TimeUnit.SECONDS);
-            }
             if(template.opsForSet().size(user_id+"_likeSet")>0){
                 Set<String> list=template.opsForSet().members(user_id+"_likeSet");
                 ResponseMessage message=ResponseMessage.success();
@@ -89,8 +83,6 @@ public class HotestServiceImp implements HotestService {
     public ResponseMessage like(Message message) {
         String uuid=UUID.randomUUID().toString();
         try{
-            template.opsForList().leftPush("lock","1");
-            template.opsForValue().setIfAbsent("Mylock",uuid);
             String user_id=message.getRequest().split(" ")[0];
             String question_id=message.getRequest().split(" ")[1];
             int sum= Integer.parseInt(template.opsForHash().get("question_like",question_id).toString());
@@ -106,10 +98,6 @@ public class HotestServiceImp implements HotestService {
 
             UpdateToLikeEsService.UpdateToLikeEsService(question_id,sum);
             mapper.likesAsync(question_id,String.valueOf(sum));
-            if(template.opsForValue().get("Mylock").equals(uuid)) {
-                template.expire("Mylock", 0, TimeUnit.NANOSECONDS);
-            }
-            template.opsForList().rightPop("lock");
         }catch (Exception e){
             e.printStackTrace();
         }
