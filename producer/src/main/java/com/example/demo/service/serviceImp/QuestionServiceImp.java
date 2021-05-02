@@ -90,7 +90,7 @@ public class QuestionServiceImp implements QuestionService {
             highlightBuilder.field("question_description");
             highlightBuilder.field("question_detail");
             highlightBuilder.requireFieldMatch(true);  //多个单词高亮的话，要把这个设置为trues
-            highlightBuilder.preTags("<span style=\"color:#A5D6A7\">");
+            highlightBuilder.preTags("<span style=\"color:#B20610\">");
             highlightBuilder.postTags("</span>");
             searchSourceBuilder.highlighter(highlightBuilder);
             //匹配目标
