@@ -35,8 +35,7 @@ public class EmailVerifyServiceImp implements EmailVerifyService {
             if(user_mail==null)
                 return ResponseMessage.fail();
             String emailServiceCode = UUID.randomUUID().toString().replace("-","").toLowerCase().substring(0,6);
-            template.opsForValue().set(user_mail+ip.replace(".","")+"Email_code",emailServiceCode);
-            template.expire(user_mail+"Email_code",60, TimeUnit.SECONDS);
+            template.opsForValue().set(user_mail+ip.replace(".","")+"Email_code",emailServiceCode,60,TimeUnit.SECONDS);
             MimeMessage message=mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject("Greeting from Louder");
