@@ -57,17 +57,18 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-            FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment");
             QueryBuilder builder=QueryBuilders.matchAllQuery();
+            searchSourceBuilder.size(2000);
+            searchSourceBuilder.query(builder);
 
-            searchSourceBuilder.query(builder).sort(fsb);
-
-            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+            searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             Map<String,Map<String,Object>> map=new HashMap<>();
+            int i=0;
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                System.out.println(i++);
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
@@ -87,6 +88,7 @@ public class QuestionServiceImp implements QuestionService {
             target=target.toLowerCase();
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.size(2000);
             //实现高亮
             HighlightBuilder highlightBuilder = new HighlightBuilder();
             highlightBuilder.field("question_description");
@@ -157,7 +159,7 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
+            searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.ASC);
 
             MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",tags);
@@ -187,7 +189,7 @@ public class QuestionServiceImp implements QuestionService {
 
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
+            searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.DESC);
             QueryBuilder builder=QueryBuilders.matchAllQuery();
 
@@ -214,7 +216,7 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
+            searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("create_time").order(SortOrder.DESC);
             QueryBuilder builder=QueryBuilders.matchAllQuery();
 
@@ -242,7 +244,7 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
+            searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("likes").order(SortOrder.DESC);
             QueryBuilder builder=QueryBuilders.matchAllQuery();
 
@@ -269,7 +271,7 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
+            searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.ASC);
 
             MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",question_tags);
