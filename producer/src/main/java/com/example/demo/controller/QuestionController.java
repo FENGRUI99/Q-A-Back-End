@@ -34,6 +34,8 @@ public class QuestionController {
         //  只要一个 request
         // 传 关键字
         // 一个
+        if(message.getRequest().equals(""))
+            return service.listQuestion("1");
         return service.search(message.getRequest());
     }
 
