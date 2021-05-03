@@ -17,7 +17,7 @@ spring:
   mail:
     host: smtp.163.com
     username: LouderOfficial@163.com
-    password: louder123
+    password: EELGOITJOHRSENFO
     default-encoding: utf-8
 
   redis:
