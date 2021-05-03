@@ -25,7 +25,7 @@ public class FileController {
     @RequestMapping("/img")
     public ResponseMessage<List<String>> getImg(@RequestBody Message message){
         ResponseMessage responseMessage=ResponseMessage.success();
-        responseMessage.setEntity(template.opsForList().range(message.getRequest()+"_picture",0,-1));
+        responseMessage.setEntity(mapper.getImage(message.getRequest()));
         return responseMessage;
     }
 
