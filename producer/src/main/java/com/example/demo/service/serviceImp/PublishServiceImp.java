@@ -39,6 +39,7 @@ public class PublishServiceImp implements PublishService {
             Date date=new Date();
             String id=String.valueOf(date.getTime());
             question.setQuestion_id(id);
+            question.setTime(Long.parseLong(id));
             template.opsForHash().put("question_like", id, "0");
             template.opsForZSet().incrementScore("question_contribute", question.getUser_id(), 1);
             mapper.publishQuestion(question,id);
