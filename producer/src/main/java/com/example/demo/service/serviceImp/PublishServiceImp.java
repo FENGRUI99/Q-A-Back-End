@@ -35,7 +35,6 @@ public class PublishServiceImp implements PublishService {
 
     @Override
     public ResponseMessage publishQuestion(Question question, List<String> files) {
-
             Date date=new Date();
             String id=String.valueOf(date.getTime());
             question.setQuestion_id(id);
