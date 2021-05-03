@@ -33,7 +33,7 @@ public class EmailVerifyServiceImp implements EmailVerifyService {
     public ResponseMessage sendEmail(String user_mail,String ip) {
         try {
             if(user_mail==null)
-                return ResponseMessage.fail();
+                return ResponseMessage.fail("email null");
             String emailServiceCode = UUID.randomUUID().toString().replace("-","").toLowerCase().substring(0,6);
             template.opsForValue().set(user_mail+ip.replace(".","")+"Email_code",emailServiceCode,60,TimeUnit.SECONDS);
             MimeMessage message=mailSender.createMimeMessage();
