@@ -27,7 +27,6 @@ public class HelloServiceImp implements HelloService {
 
     @Override
     public ResponseMessage login(String id, String psw) {
-        System.out.println(id+" "+psw);
         try {
             if(mapper.login(id,psw).equals(psw)) {
                 List<studentInfo> studentInfo = mapper.nameReturn(id);
@@ -38,7 +37,6 @@ public class HelloServiceImp implements HelloService {
             else
                 return ResponseMessage.fail();
         } catch (Exception e){
-            e.printStackTrace();
             return ResponseMessage.fail();
         }
 
