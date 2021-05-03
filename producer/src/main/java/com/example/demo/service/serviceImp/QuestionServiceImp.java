@@ -272,7 +272,7 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.ASC);
 
-            MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",question_tags);
+            MatchPhraseQueryBuilder termQueryBuilder = QueryBuilders.matchPhraseQuery("question_tags",question_tags);
             searchSourceBuilder.query(termQueryBuilder).sort(fsb);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 
