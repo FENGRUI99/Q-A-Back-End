@@ -66,9 +66,7 @@ public class QuestionServiceImp implements QuestionService {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             Map<String,Map<String,Object>> map=new HashMap<>();
-            int i=0;
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                System.out.println(i++);
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();

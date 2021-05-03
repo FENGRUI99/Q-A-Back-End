@@ -33,6 +33,7 @@ spring:
   application:
     name: louder_producer
 
+
 rocketmq:
   name-server: 121.5.27.43:9876
   producer:

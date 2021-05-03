@@ -38,7 +38,7 @@ public class QuestionController {
     }
 
     @ApiOperation(value = "list by tags API",httpMethod = "GET")
-    @RequestMapping("/timeSort")
+    @RequestMapping("/listbyTags")
     public ResponseMessage<Question> listbyTag(@RequestBody Message message){
         //  只要一个 request,返回一个tag或多个
         //  tag拼接的字符串
