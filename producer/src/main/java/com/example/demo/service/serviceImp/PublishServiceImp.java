@@ -78,7 +78,7 @@ public class PublishServiceImp implements PublishService {
     public ResponseMessage publishComment(Comment comment) {
         try{
             Date date=new Date();
-            comment.setCreate_time(String.valueOf(date.getTime()));
+            comment.setCreate_time(date.getTime());
             Long commentId = template.boundValueOps("CommentId").increment(1);
             comment.setComment_id(commentId.intValue());
             mapper.publishComment(comment);

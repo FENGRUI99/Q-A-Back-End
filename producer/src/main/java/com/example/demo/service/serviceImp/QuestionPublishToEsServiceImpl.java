@@ -56,8 +56,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
             throw new RuntimeException("Comment on failure");
         }
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        comment.setCreate_time(String.valueOf(date.getTime()));
+        comment.setCreate_time(date.getTime());
         Map<String,Comment> commentMap=questionEs.getCommentList();
         commentMap.put(String.valueOf(comment.getComment_id()),comment);
         questionEs.setCommentList(commentMap);
