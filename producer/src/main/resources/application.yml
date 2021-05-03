@@ -16,8 +16,8 @@ spring:
 
   mail:
     host: smtp.163.com
-    username: fitzwang202006@163.com
-    password: BTHSVBTDJRABAUOJ
+    username: LouderOfficial@163.com
+    password: louder123
     default-encoding: utf-8
 
   redis:
@@ -44,7 +44,7 @@ rocketmq:
 
 mail:
   fromMail:
-    addr: fitzwang202006@163.com
+    addr: LouderOfficial@163.com
 
 
 
