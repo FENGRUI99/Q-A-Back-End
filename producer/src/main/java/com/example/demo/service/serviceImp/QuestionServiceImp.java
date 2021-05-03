@@ -212,7 +212,6 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            ArrayList<Map<String,Object>> list = new ArrayList<>();
             Map<String,Map<String,Object>> map=new HashMap<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
