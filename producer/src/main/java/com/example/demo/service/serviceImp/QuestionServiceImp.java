@@ -160,7 +160,7 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.ASC);
 
-            MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",tags);
+            MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("question_tags",tags).operator(Operator.AND);
             searchSourceBuilder.query(termQueryBuilder).sort(fsb);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 
@@ -168,7 +168,6 @@ public class QuestionServiceImp implements QuestionService {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             Map<String,Map<String,Object>> map=new HashMap<>();
-            ArrayList<Map<String,Object>> list = new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
             }
