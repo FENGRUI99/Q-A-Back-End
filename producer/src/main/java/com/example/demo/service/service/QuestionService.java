@@ -7,9 +7,9 @@ public interface QuestionService {
     ResponseMessage listQuestion(String id);
     ResponseMessage search(String target);
     ResponseMessage listbyTag(String tags);
-    ResponseMessage answerSort();
-    ResponseMessage timeSort();
-    ResponseMessage likesSort();
+    ResponseMessage answerSort(String flag);
+    ResponseMessage timeSort(String flag);
+    ResponseMessage likesSort(String flag);
     ResponseMessage relevant(String question_tags);
 
 }

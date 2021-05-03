@@ -172,13 +172,17 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     @Override
-    public ResponseMessage answerSort() {
+    public ResponseMessage answerSort(String flag) {
         try {
 
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             searchSourceBuilder.size(2000);
-            FieldSortBuilder fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.DESC);
+            FieldSortBuilder fsb;
+            if(flag.equals("a"))
+                fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.DESC);
+            else
+                fsb= SortBuilders.fieldSort("number_comment").order(SortOrder.ASC);
             QueryBuilder builder=QueryBuilders.matchAllQuery();
 
             searchSourceBuilder.query(builder).sort(fsb);
@@ -202,12 +206,17 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     @Override
-    public ResponseMessage timeSort() {
+    public ResponseMessage timeSort(String flag) {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             searchSourceBuilder.size(2000);
-            FieldSortBuilder fsb= SortBuilders.fieldSort("create_time").order(SortOrder.DESC);
+
+            FieldSortBuilder fsb;
+            if(flag.equals("a"))
+                fsb= SortBuilders.fieldSort("create_time").order(SortOrder.DESC);
+            else
+                fsb= SortBuilders.fieldSort("create_time").order(SortOrder.ASC);
             QueryBuilder builder=QueryBuilders.matchAllQuery();
 
             searchSourceBuilder.query(builder).sort(fsb);
@@ -230,12 +239,16 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     @Override
-    public ResponseMessage likesSort() {
+    public ResponseMessage likesSort(String flag) {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             searchSourceBuilder.size(2000);
-            FieldSortBuilder fsb= SortBuilders.fieldSort("likes").order(SortOrder.DESC);
+            FieldSortBuilder fsb;
+            if(flag.equals("a"))
+                fsb= SortBuilders.fieldSort("likes").order(SortOrder.DESC);
+            else
+                fsb= SortBuilders.fieldSort("likes").order(SortOrder.ASC);
             QueryBuilder builder=QueryBuilders.matchAllQuery();
             searchSourceBuilder.query(builder).sort(fsb);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);

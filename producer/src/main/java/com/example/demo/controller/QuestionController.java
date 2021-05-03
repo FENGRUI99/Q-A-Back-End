@@ -54,20 +54,20 @@ public class QuestionController {
 
     @ApiOperation(value = "questions sort by time API",httpMethod = "GET")
     @RequestMapping("/sortbyTime")
-    public ResponseMessage<Question> sortbyTime(){
-        return service.timeSort();
+    public ResponseMessage<Question> sortbyTime(@RequestBody Message message){
+        return service.timeSort(message.getRequest());
     }
 
     @ApiOperation(value = "question sort by likes API",httpMethod = "GET")
     @RequestMapping("/sortbyLikes")
-    public ResponseMessage<Question> sortbyLikes(){
-        return service.likesSort();
+    public ResponseMessage<Question> sortbyLikes(@RequestBody Message message){
+        return service.likesSort(message.getRequest());
     }
 
     @ApiOperation(value = "question sort by likes API",httpMethod = "GET")
     @RequestMapping("/sortbyAnswers")
-    public ResponseMessage<Question> sortbyAnswers(){
-        return service.answerSort();
+    public ResponseMessage<Question> sortbyAnswers(@RequestBody Message message){
+        return service.answerSort(message.getRequest());
     }
 
     @ApiOperation(value = "question relevant API",httpMethod = "GET")
