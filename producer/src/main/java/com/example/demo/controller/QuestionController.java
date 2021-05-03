@@ -46,6 +46,8 @@ public class QuestionController {
         //  tag拼接的字符串
         //  eg. 选择html css 返回1,2
         //  选择html 返回1
+        if(message.getRequest().equals(""))
+            return service.listQuestion("1");
         return service.listbyTag(message.getRequest());
     }
 
