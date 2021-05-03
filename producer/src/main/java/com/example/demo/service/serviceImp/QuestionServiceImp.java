@@ -257,13 +257,22 @@ public class QuestionServiceImp implements QuestionService {
 
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+            Map<String,Map<String,Object>> map=new HashMap<String,Map<String,Object>>(){
 
-            Map<String,Map<String,Object>> map=new HashMap<>();
+                @Override
+                public int hashCode() {
+
+                    return Integer.parseInt(keySet().iterator().next());
+                }
+            };
+            ArrayList<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
+                list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
             responseMessage.setEntity(map);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
