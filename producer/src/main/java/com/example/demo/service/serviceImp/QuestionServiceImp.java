@@ -54,13 +54,12 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
-
-            Map<String,Map<String,Object>> map=new HashMap<>();
+            ArrayList<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                map.put(documentFields.getId(),documentFields.getSourceAsMap());
+                list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(map);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,7 +107,7 @@ public class QuestionServiceImp implements QuestionService {
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             //打包
-            Map<String,Map<String,Object>> map=new HashMap<>();
+            List<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 Map<String, HighlightField> highlight =documentFields.getHighlightFields();
                 HighlightField title=highlight.get("question_description");
@@ -130,10 +129,11 @@ public class QuestionServiceImp implements QuestionService {
                     }
                     source.put("question_detail",newTitle);
                 }
-                map.put(documentFields.getId(),documentFields.getSourceAsMap());
+                list.add(documentFields.getSourceAsMap());
+
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(map);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,11 +158,12 @@ public class QuestionServiceImp implements QuestionService {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             Map<String,Map<String,Object>> map=new HashMap<>();
+            List<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                map.put(documentFields.getId(),documentFields.getSourceAsMap());
+                list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(map);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -186,11 +187,13 @@ public class QuestionServiceImp implements QuestionService {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
             Map<String,Map<String,Object>> map=new HashMap<>();
+            ArrayList<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                map.put(documentFields.getId(),documentFields.getSourceAsMap());
+
+                list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(map);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,12 +215,13 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            Map<String,Map<String,Object>> map=new HashMap<>();
+
+            ArrayList<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                map.put(documentFields.getId(),documentFields.getSourceAsMap());
+                list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(map);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -236,17 +240,13 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.query(builder).sort(fsb);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
-
-
-            Map<String,Map<String,Object>> map=new HashMap<>();
+            ArrayList<Map<String,Object>> list=new ArrayList<>();
 
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                map.put(documentFields.getId(),documentFields.getSourceAsMap());
-
+                list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(map);
-
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -269,12 +269,12 @@ public class QuestionServiceImp implements QuestionService {
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            Map<String,Map<String,Object>> map=new HashMap<>();
+            ArrayList<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-                map.put(documentFields.getId(),documentFields.getSourceAsMap());
+                list.add(documentFields.getSourceAsMap());
             }
             ResponseMessage responseMessage=ResponseMessage.success();
-            responseMessage.setEntity(map);
+            responseMessage.setEntity(list);
             return responseMessage;
         } catch (Exception e){
             e.printStackTrace();
