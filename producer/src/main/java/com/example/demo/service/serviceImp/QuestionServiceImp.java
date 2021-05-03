@@ -2,22 +2,14 @@ package com.example.demo.service.serviceImp;
 import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.dao.QuestionDao;
 import com.example.demo.mapper.QuestionMapper;
-import com.example.demo.pojo.Question;
-import com.example.demo.pojo.QuestionEs;
 import com.example.demo.service.service.QuestionService;
-import com.google.common.collect.Lists;
 import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
-import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
-import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
@@ -25,20 +17,10 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.search.suggest.Suggest;
-import org.elasticsearch.search.suggest.SuggestBuilder;
-import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
-import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
 
 import javax.annotation.Resource;
-import javax.naming.directory.SearchControls;
-import javax.security.auth.kerberos.KerberosTicket;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -252,27 +234,20 @@ public class QuestionServiceImp implements QuestionService {
             searchSourceBuilder.size(2000);
             FieldSortBuilder fsb= SortBuilders.fieldSort("likes").order(SortOrder.DESC);
             QueryBuilder builder=QueryBuilders.matchAllQuery();
-
             searchSourceBuilder.query(builder).sort(fsb);
-
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
-            Map<String,Map<String,Object>> map=new HashMap<String,Map<String,Object>>(){
 
-                @Override
-                public int hashCode() {
 
-                    return Integer.parseInt(keySet().iterator().next());
-                }
-            };
-            ArrayList<Map<String,Object>> list=new ArrayList<>();
+            Map<String,Map<String,Object>> map=new HashMap<>();
+
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 map.put(documentFields.getId(),documentFields.getSourceAsMap());
-                list.add(documentFields.getSourceAsMap());
+
             }
             ResponseMessage responseMessage=ResponseMessage.success();
             responseMessage.setEntity(map);
-            responseMessage.setEntity(list);
+
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();

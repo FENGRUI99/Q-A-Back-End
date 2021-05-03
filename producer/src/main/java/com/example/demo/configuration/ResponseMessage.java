@@ -65,6 +65,7 @@ public class ResponseMessage<T> {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
     public T getEntity() {
         return entity;
     }
