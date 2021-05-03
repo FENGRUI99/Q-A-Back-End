@@ -16,6 +16,8 @@ import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
@@ -60,6 +62,12 @@ public class QuestionServiceImp implements QuestionService {
             QueryBuilder builder=QueryBuilders.matchAllQuery();
             searchSourceBuilder.size(2000);
             searchSourceBuilder.query(builder);
+
+//            FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[]{
+//                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.wildcardQuery("number_comment","*"), ScoreFunctionBuilders.weightFactorFunction(100)),
+//                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.termQuery("type", 2), ScoreFunctionBuilders.weightFactorFunction(1)),
+//                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("type", 1), ScoreFunctionBuilders.weightFactorFunction(1))
+//            };
 
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             searchRequest.source(searchSourceBuilder);

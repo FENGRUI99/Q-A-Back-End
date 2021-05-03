@@ -46,8 +46,10 @@ public class PublishServiceImp implements PublishService {
             for (String tag : tags) {
                 template.opsForZSet().incrementScore("question_tags", tag, 1);
             }
-
             template.opsForList().leftPush("pic_list",id);
+            for (int i = 0; i < files.size(); i++) {
+                template.opsForList().leftPush(id+"_picture",files.get(i));
+            }
             mapper.addPic(id, files);
             questionPublishToEsService.publishQuestion(question);
         }catch (Exception e) {
