@@ -35,7 +35,7 @@ public class PublishServiceImp implements PublishService {
 
     @Override
     public ResponseMessage publishQuestion(Question question, List<String> files) {
-        try {
+
             Date date=new Date();
             String id=String.valueOf(date.getTime());
             question.setQuestion_id(id);
@@ -50,10 +50,9 @@ public class PublishServiceImp implements PublishService {
             template.opsForList().leftPush("pic_list",id);
             mapper.addPic(id, files);
             questionPublishToEsService.publishQuestion(question);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseMessage.success();
+            ResponseMessage m =ResponseMessage.success();
+            m.setEntity(id);
+            return m;
     }
 
     @Override
@@ -70,8 +69,9 @@ public class PublishServiceImp implements PublishService {
         for (String tag : tags) {
             template.opsForZSet().incrementScore("question_tags", tag, 1);
         }
-
-        return ResponseMessage.success();
+        ResponseMessage m =ResponseMessage.success();
+        m.setEntity(id);
+        return m;
     }
 
     @Override
