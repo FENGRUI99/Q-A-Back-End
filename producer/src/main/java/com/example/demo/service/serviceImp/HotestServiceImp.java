@@ -84,7 +84,6 @@ public class HotestServiceImp implements HotestService {
 
     @Override
     public ResponseMessage like(Message message) {
-        String uuid=UUID.randomUUID().toString();
         try{
             String user_id=message.getRequest().split(" ")[0];
             String question_id=message.getRequest().split(" ")[1];

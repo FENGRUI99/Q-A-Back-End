@@ -7,11 +7,15 @@ import com.example.demo.pojo.QuestionEs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  *
  */
+
 @Service("QuestionPublishToEsServiceImpl")
 public class QuestionPublishToEsServiceImpl  {
 
@@ -20,7 +24,7 @@ public class QuestionPublishToEsServiceImpl  {
 
 
 
-    public boolean publishQuestion(Question question){
+    public boolean publishQuestion(Question question) {
         if (question!=null){
             QuestionEs questionEs = new QuestionEs();
             questionEs.setQuestion_id(question.getQuestion_id());
@@ -30,10 +34,12 @@ public class QuestionPublishToEsServiceImpl  {
             questionEs.setQuestion_description(question.getQuestion_description());
             questionEs.setQuestion_detail(question.getQuestion_detail());
             questionEs.setQuestion_tags(question.getQuestion_tags());
-            questionEs.setNumber_comment(question.getNumber_comment());
-            questionEs.setLikes(question.getLikes());
+            questionEs.setNumber_comment(0);
+            questionEs.setLike_flag("0");
+            questionEs.setLikes(0);
             questionEs.setCreate_time(question.getTime());
-
+            Map<String,Comment> map=new HashMap<>();
+            questionEs.setCommentList(map);
             questionDao.save(questionEs);
             return true;
         }
@@ -50,6 +56,11 @@ public class QuestionPublishToEsServiceImpl  {
         if (!result){
             throw new RuntimeException("Comment on failure");
         }
+        Date date = new Date();
+        comment.setCreate_time(date.getTime());
+        Map<String,Comment> commentMap=questionEs.getCommentList();
+        commentMap.put(String.valueOf(comment.getComment_id()),comment);
+        questionEs.setCommentList(commentMap);
         questionEs.addCommentNumber();
         questionDao.save(questionEs);
 

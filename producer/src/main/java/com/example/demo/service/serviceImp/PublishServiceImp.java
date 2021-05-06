@@ -7,6 +7,8 @@ import com.example.demo.pojo.Comment;
 import com.example.demo.pojo.Question;
 import com.example.demo.service.service.PublishService;
 import com.example.demo.service.service.QuestionPublishToEsService;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -75,28 +77,19 @@ public class PublishServiceImp implements PublishService {
 
     @Override
     public ResponseMessage publishComment(Comment comment) {
-        try{
             Date date=new Date();
             comment.setCreate_time(date.getTime());
-            Long commentId = template.boundValueOps("CommentId").increment(1);
-            comment.setComment_id(commentId.intValue());
-            mapper.publishComment(comment);
-            mapper.commentIncrement(comment.getQuestion_id());
-            questionPublishToEsService.publishComment(comment);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-//        rocketMQTemplate.asyncSend("CommentPublishService", comment, new SendCallback() {
-//            @Override
-//            public void onSuccess(SendResult sendResult) {
-//
-//            }
-//
-//            @Override
-//            public void onException(Throwable throwable) {
-//                System.out.println("error");
-//            }
-//        });
+        rocketMQTemplate.asyncSend("CommentPublishService", comment, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                System.out.println("error");
+            }
+        });
         return ResponseMessage.success();
     }
 

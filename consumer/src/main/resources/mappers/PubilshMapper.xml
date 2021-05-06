@@ -14,9 +14,9 @@
     </insert>
 
     <insert id="publishComment" parameterType="com.example.demo.pojo.Comment" >
-        insert into comment(comment_id,user_id,user_name,comment_detail,question_id)
+        insert into comment(comment_id,user_id,user_name,comment_detail,question_id,create_time)
         values (#{comment.comment_id},#{comment.user_id},#{comment.user_name},#{comment.comment_detail},
-                #{comment.question_id})
+                #{comment.question_id},#{comment.create_time})
             on duplicate key update comment_id=(comment_id),
                 user_name=(user_name),
                 comment_detail=(comment_detail),

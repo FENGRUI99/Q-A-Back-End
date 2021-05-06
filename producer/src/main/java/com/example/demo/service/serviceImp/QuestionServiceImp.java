@@ -157,7 +157,6 @@ public class QuestionServiceImp implements QuestionService {
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
 
-            Map<String,Map<String,Object>> map=new HashMap<>();
             List<Map<String,Object>> list=new ArrayList<>();
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 list.add(documentFields.getSourceAsMap());

@@ -1,6 +1,5 @@
 package com.example.demo.pojo;
 
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -18,12 +17,21 @@ public class QuestionEs implements Serializable {
 
     @Id
     private String id;
+    String random;
 
     @Field(type = FieldType.Keyword)
     String question_id;
 
+    public String getRandom() {
+        return random;
+    }
+
     public String getQuestion_id() {
         return question_id;
+    }
+
+    public void setRandom(String random) {
+        this.random = random;
     }
 
     public void setQuestion_id(String question_id) {
@@ -39,10 +47,10 @@ public class QuestionEs implements Serializable {
     @Field(type=FieldType.Text,index=false)
     String user_name;
     //question_description
-    @Field(type=FieldType.Text, analyzer="ik_max_word")
+    @Field(type=FieldType.Auto, analyzer="ik_smart")
     String question_description;
     //question_detail
-    @Field(type=FieldType.Text, analyzer="ik_max_word")
+    @Field(type=FieldType.Auto, analyzer="ik_smart")
     String question_detail;
     //question_tags
     @Field(type = FieldType.Keyword)
@@ -56,15 +64,28 @@ public class QuestionEs implements Serializable {
     @Field(type=FieldType.Long,index = false)
     int likes;
 
-    @Field(type=FieldType.Keyword)
-    String create_time;
+    //是否点赞
+    @Field(type=FieldType.Text,index = false)
+    String like_flag;
+
+    @Field(type=FieldType.Long)
+    Long create_time;
 
 
+    public String getLike_flag() {
+        return like_flag;
+    }
 
+    public void setLike_flag(String like_flag) {
+        this.like_flag = like_flag;
+    }
 
     private Map<String/*comment_id*/,Comment/*评论*/> commentList;
 
-    public QuestionEs(String id, String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment, int likes, String create_time, Map<String, Comment> commentList) {
+    public QuestionEs(String id, String question_id, String user_id, String user_name,
+                      String question_description, String question_detail,
+                      String question_tags, int number_comment, int likes,
+                      Long create_time, Map<String, Comment> commentList) {
         this.id = id;
         this.question_id = question_id;
         this.user_id = user_id;
@@ -164,11 +185,11 @@ public class QuestionEs implements Serializable {
         this.likes = likes;
     }
 
-    public String getCreate_time() {
+    public Long getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(String create_time) {
+    public void setCreate_time(Long create_time) {
         this.create_time = create_time;
     }
 }

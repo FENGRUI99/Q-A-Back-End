@@ -8,9 +8,13 @@ import com.example.demo.service.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -23,5 +27,30 @@ public class UserController {
     @RequestMapping("/UserInfo")
     public ResponseMessage<studentInfo> getUserInfo(@RequestBody Message message){
         return service.getUserInfo(message.getRequest());
+    }
+
+    @RequestMapping("/Upload")
+    public  ResponseMessage uploadImg(@RequestParam("file") MultipartFile file, @RequestParam("user_id") String user_id) throws IOException {
+        return service.uploadImg(file,user_id);
+    }
+
+    @RequestMapping("/getPhoto")
+    public ResponseMessage<String> getPhoto(@RequestBody Message message){
+        return service.getPhoto(message.getRequest());
+    }
+
+    @RequestMapping("/userIDQuestion")
+    public ResponseMessage<List> getQuestionsById(@RequestBody Message message){
+        return service.getQuestionsById(message.getRequest());
+    }
+
+    @RequestMapping("/userLikeQuestion")
+    public ResponseMessage<List> getQuestionsByLike(@RequestBody Message message){
+        return service.getQuestionsByLike(message.getRequest());
+    }
+
+    @RequestMapping("/userCommentQuestion")
+    public ResponseMessage<List> getQuestionByComment(@RequestBody Message message){
+        return service.getQuestionByComment(message.getMsg());
     }
 }

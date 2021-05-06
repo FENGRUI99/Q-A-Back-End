@@ -1,13 +1,13 @@
 package com.example.demo.pojo;
 
-
-
 import java.io.Serializable;
+
 
 public class Comment implements Serializable {
 
     public Comment() {
     }
+
 
     int comment_id;
 
@@ -19,7 +19,7 @@ public class Comment implements Serializable {
 
     String question_id;
 
-    String create_time;
+    Long create_time;
 
     public Comment(String user_id, String user_name, String comment_detail, String question_id) {
         this.user_id = user_id;
@@ -28,15 +28,15 @@ public class Comment implements Serializable {
         this.question_id = question_id;
     }
 
-    public String getCreate_time() {
+    public Long getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(String create_time) {
+    public void setCreate_time(Long create_time) {
         this.create_time = create_time;
     }
 
-    public Comment(int comment_id, String user_id, String user_name, String comment_detail, String question_id, String create_time) {
+    public Comment(int comment_id, String user_id, String user_name, String comment_detail, String question_id, Long create_time) {
         this.comment_id = comment_id;
         this.user_id = user_id;
         this.user_name = user_name;

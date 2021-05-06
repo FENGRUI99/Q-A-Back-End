@@ -1,8 +1,9 @@
 package com.example.demo.pojo;
 
-
 import java.io.Serializable;
 import java.util.List;
+
+
 
 public class Question implements Serializable {
 
@@ -20,17 +21,17 @@ public class Question implements Serializable {
         this.question_detail = question_detail;
     }
 
-    public String getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
     public Question(String question_id, String user_id, String user_name, String question_description,
                     String question_detail, String question_tags,
-                    int number_comment, int likes, String time, List<Comment> commentList) {
+                    int number_comment, int likes, Long time, List<Comment> commentList) {
         this.question_id = question_id;
         this.user_id = user_id;
         this.user_name = user_name;
@@ -45,47 +46,14 @@ public class Question implements Serializable {
 
 
     String question_id;
-
     String user_id;
-
     String user_name;
-
     String question_description;
-
     String question_detail;
-
     String question_tags;
-
     int number_comment;
-
     int likes;
-    String like_flag;
-
-    public Question(String question_id, String user_id, String user_name, String question_description, String question_detail, String question_tags, int number_comment, int likes, String like_flag, String time, List<Comment> commentList) {
-        this.question_id = question_id;
-        this.user_id = user_id;
-        this.user_name = user_name;
-        this.question_description = question_description;
-        this.question_detail = question_detail;
-        this.question_tags = question_tags;
-        this.number_comment = number_comment;
-        this.likes = likes;
-        this.like_flag = like_flag;
-        this.time = time;
-        this.commentList = commentList;
-    }
-
-    public String getLike_flag() {
-        return like_flag;
-    }
-
-    public void setLike_flag(String like_flag) {
-        this.like_flag = like_flag;
-    }
-
-
-    String time;
-
+    Long time;
     List<Comment> commentList;
 
 
@@ -166,5 +134,4 @@ public class Question implements Serializable {
 
     public void setLikes(int likes) {
         this.likes = likes;
-    }
-}
+    }}

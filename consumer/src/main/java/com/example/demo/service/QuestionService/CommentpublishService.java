@@ -1,5 +1,6 @@
 package com.example.demo.service.QuestionService;
 
+import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.mapper.PublishMapper;
 import com.example.demo.pojo.Comment;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -24,6 +25,10 @@ public class CommentpublishService implements RocketMQListener<Comment> {
     StringRedisTemplate template;
     @Override
     public void onMessage(Comment comment) {
-
+        Long commentId = template.boundValueOps("CommentId").increment(1);
+        comment.setComment_id(commentId.intValue());
+        mapper.publishComment(comment);
+        mapper.commentIncrement(comment.getQuestion_id());
+        questionPublishToEsService.publishComment(comment);
     }
 }

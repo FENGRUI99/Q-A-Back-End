@@ -17,13 +17,6 @@
        select * from user_info where user_id=#{id} ;
     </select>
 
-    <insert id="register" parameterType="com.example.demo.pojo.studentInfo">
-        insert into user_info values (
-        #{item.user_id},#{item.user_mail},#{item.user_name},
-        #{item.user_psw},#{item.user_tags})
-        on duplicate key update user_id=(user_id),user_mail=(user_mail),
-        user_name=(user_name),user_psw=(user_psw),user_tags=(user_tags)
-    </insert>
 
     <select id="nameReturn" resultMap="studentinfo">
         select distinct c.user_id, c.user_mail, c.user_name,c.user_tags from user_info c where user_id=#{id};
