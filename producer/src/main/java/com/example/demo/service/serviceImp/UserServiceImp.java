@@ -94,13 +94,16 @@ public class UserServiceImp implements UserService {
             searchSourceBuilder.size(2000);
             LinkedHashSet<String> id_list= (LinkedHashSet) template.opsForSet().members(user_id + "_likeSet");
             BoolQueryBuilder boolQueryBuilder=QueryBuilders.boolQuery();
-
+            boolean flag=false;
             for (String id : id_list) {
                 if(!id.equals("-1")){
+                    flag=true;
                     TermQueryBuilder termQueryBuilder=QueryBuilders.termQuery("question_id",id);
                     boolQueryBuilder.should(termQueryBuilder);
                 }
             }
+            if(!flag)
+                return ResponseMessage.success();
             searchSourceBuilder.query(boolQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
@@ -121,26 +124,32 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ResponseMessage<List> getQuestionByComment(String msg) {
-//        try {
-//            SearchRequest searchRequest = new SearchRequest("questiones");
-//            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//            searchSourceBuilder.size(2000);
-//            NestedQueryBuilder queryBuilder = QueryBuilders.nestedQuery("commentList.*", QueryBuilders.termQuery("commentList.*.user_id",msg), ScoreMode.Total);
-//            searchSourceBuilder.query(queryBuilder);
-//            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
-//            //开始搜索
-//            searchRequest.source(searchSourceBuilder);
-//            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-//            List<Map<String, Object>> list = new ArrayList<>();
-//            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
-//                list.add(documentFields.getSourceAsMap());
-//            }
-//            ResponseMessage message = ResponseMessage.success();
-//            message.setEntity(list);
-//            return message;
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        try {
+            SearchRequest searchRequest = new SearchRequest("questiones");
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.size(2000);
+            BoolQueryBuilder queryBuilder=QueryBuilders.boolQuery();
+            LinkedHashSet<String> linkedHashSet= (LinkedHashSet<String>) template.opsForSet().members(msg+"_CommentSet");
+            if(linkedHashSet.size()<1)
+                return ResponseMessage.success();
+            for (String s : linkedHashSet) {
+                queryBuilder.should(QueryBuilders.termQuery("question_id",s));
+            }
+            searchSourceBuilder.query(queryBuilder);
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+            //开始搜索
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            List<Map<String, Object>> list = new ArrayList<>();
+            for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+                list.add(documentFields.getSourceAsMap());
+            }
+            ResponseMessage message = ResponseMessage.success();
+            message.setEntity(list);
+            return message;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return ResponseMessage.fail();
     }
 }

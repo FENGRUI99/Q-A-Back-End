@@ -51,6 +51,6 @@ public class UserController {
 
     @RequestMapping("/userCommentQuestion")
     public ResponseMessage<List> getQuestionByComment(@RequestBody Message message){
-        return service.getQuestionByComment(message.getMsg());
+        return service.getQuestionByComment(message.getRequest());
     }
 }
