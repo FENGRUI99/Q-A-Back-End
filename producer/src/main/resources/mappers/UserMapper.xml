@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.demo.mapper.UserMapper">
-    <select id="getUserInfo" parameterType="java.lang.String" resultType="com.example.demo.pojo.studentInfo">
-        select user_id,user_mail,user_name,user_tags from user_info where user_id=#{id}
+    <select id="getUserInfo" parameterType="java.lang.String" resultType="com.example.demo.pojo.UserInfo">
+        select user_id,user_mail,user_name,user_tags,(select COUNT(*) from question where user_id=#{id} )as Question_sum ,
+(select count(*) from `comment` where user_id=#{id}) as Comment_sum  from user_info where user_id=#{id}
     </select>
 
 
