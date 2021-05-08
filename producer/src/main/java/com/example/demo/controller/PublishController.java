@@ -33,7 +33,6 @@ public class PublishController {
 
     @ApiOperation(value = "public question API",httpMethod = "POST")
     @RequestMapping("/publishQuestionWP")
-
     public ResponseMessage publishQuetion( @RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("user_id") String user_id,@RequestParam("user_name") String user_name,
                                            @RequestParam("question_description") String description,@RequestParam("question_detail") String detail,

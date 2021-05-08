@@ -44,13 +44,6 @@ public class QuestionServiceImp implements QuestionService {
             QueryBuilder builder=QueryBuilders.matchAllQuery();
             searchSourceBuilder.size(2000);
             searchSourceBuilder.query(builder);
-
-//            FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[]{
-//                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.wildcardQuery("number_comment","*"), ScoreFunctionBuilders.weightFactorFunction(100)),
-//                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.termQuery("type", 2), ScoreFunctionBuilders.weightFactorFunction(1)),
-//                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("type", 1), ScoreFunctionBuilders.weightFactorFunction(1))
-//            };
-
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
