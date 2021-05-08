@@ -79,17 +79,22 @@ public class PublishServiceImp implements PublishService {
     public ResponseMessage publishComment(Comment comment) {
             Date date=new Date();
             comment.setCreate_time(date.getTime());
-        rocketMQTemplate.asyncSend("CommentPublishService", comment, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                System.out.println("error");
-            }
-        });
+        Long commentId = template.boundValueOps("CommentId").increment(1);
+        comment.setComment_id(commentId.intValue());
+        mapper.publishComment(comment);
+        mapper.commentIncrement(comment.getQuestion_id());
+        questionPublishToEsService.publishComment(comment);
+//        rocketMQTemplate.asyncSend("CommentService", comment, new SendCallback() {
+//            @Override
+//            public void onSuccess(SendResult sendResult) {
+//
+//            }
+//
+//            @Override
+//            public void onException(Throwable throwable) {
+//                System.out.println("error");
+//            }
+//        });
         return ResponseMessage.success();
     }
 

@@ -11,10 +11,10 @@ import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
+
 
 @Service
-@RocketMQMessageListener(topic = "CommentPublishService",consumerGroup = "CommentPublishGroup")
+@RocketMQMessageListener(topic = "CommentService",consumerGroup = "CommentPublishGroup")
 public class CommentpublishService implements RocketMQListener<Comment> {
 
     @Resource

@@ -7,10 +7,7 @@ import com.example.demo.pojo.QuestionEs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  *
@@ -38,8 +35,8 @@ public class QuestionPublishToEsServiceImpl  {
             questionEs.setLike_flag("0");
             questionEs.setLikes(0);
             questionEs.setCreate_time(question.getTime());
-            Map<String,Comment> map=new HashMap<>();
-            questionEs.setCommentList(map);
+            ArrayList<Comment> list=new ArrayList<>();
+            questionEs.setCommentList(list);
             questionDao.save(questionEs);
             return true;
         }
@@ -52,15 +49,11 @@ public class QuestionPublishToEsServiceImpl  {
             throw new RuntimeException("The comment issue doesn't exist！");
         }
         QuestionEs questionEs = byId.get();
-        boolean result = questionEs.putComment(comment);
-        if (!result){
-            throw new RuntimeException("Comment on failure");
-        }
         Date date = new Date();
         comment.setCreate_time(date.getTime());
-        Map<String,Comment> commentMap=questionEs.getCommentList();
-        commentMap.put(String.valueOf(comment.getComment_id()),comment);
-        questionEs.setCommentList(commentMap);
+        List<Comment> commentList=questionEs.getCommentList();
+        commentList.add(comment);
+        questionEs.setCommentList(commentList);
         questionEs.addCommentNumber();
         questionDao.save(questionEs);
 
