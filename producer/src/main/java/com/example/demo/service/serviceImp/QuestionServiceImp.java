@@ -43,7 +43,6 @@ public class QuestionServiceImp implements QuestionService {
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             QueryBuilder builder=QueryBuilders.matchAllQuery();
             searchSourceBuilder.size(2000);
-            searchSourceBuilder.query(builder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);

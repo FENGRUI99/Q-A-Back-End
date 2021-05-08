@@ -4,9 +4,17 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @ApiModel
 public class Comment implements Serializable {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comment)) return false;
+        Comment comment = (Comment) o;
+        return comment_id == comment.comment_id && Objects.equals(user_id, comment.user_id) && Objects.equals(user_name, comment.user_name) && Objects.equals(comment_detail, comment.comment_detail) && Objects.equals(question_id, comment.question_id) && Objects.equals(create_time, comment.create_time);
+    }
 
     public Comment() {
     }

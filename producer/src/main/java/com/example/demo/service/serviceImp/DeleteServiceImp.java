@@ -1,7 +1,10 @@
 package com.example.demo.service.serviceImp;
 
 import com.example.demo.configuration.ResponseMessage;
+import com.example.demo.dao.QuestionDao;
 import com.example.demo.mapper.DeleteMapper;
+import com.example.demo.pojo.Comment;
+import com.example.demo.pojo.QuestionEs;
 import com.example.demo.service.service.DeleteService;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RequestOptions;
@@ -11,15 +14,22 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.ClientInfoStatus;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DeleteServiceImp implements DeleteService {
 
     @Resource
     DeleteMapper deleteMapper;
+
+    @Autowired
+    QuestionDao questionDao;
 
 
     @Override
@@ -52,7 +62,30 @@ public class DeleteServiceImp implements DeleteService {
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
-            return  ResponseMessage.fail("fail to delete");
+            return  ResponseMessage.fail("fail to delete question");
         }
+    }
+
+    @Override
+    public ResponseMessage deleteComment(Comment comment) {
+        try {
+            Optional<QuestionEs> byId = questionDao.findById(comment.getQuestion_id());
+
+        if (!byId.isPresent()){
+            throw new RuntimeException("The comment issue doesn't exist！");
+        }
+        QuestionEs questionEs = byId.get();
+        List<Comment> commentList = questionEs.getCommentList();
+        commentList.remove(comment);
+        questionEs.setCommentList(commentList);
+        questionDao.save(questionEs);
+        deleteMapper.deleteComment(comment.getComment_id());
+        ResponseMessage responseMessage=ResponseMessage.success();
+        return responseMessage;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseMessage.fail("fail to delete comment");
+        }
+
     }
 }

@@ -5,5 +5,9 @@
         delete from question where question_id = #{question_id}
     </delete>
 
+    <delete id="deleteComment" parameterType="java.lang.Integer">
+        delete from comment where comment_id = #{comment_id}
+    </delete>
+
 
 </mapper>
