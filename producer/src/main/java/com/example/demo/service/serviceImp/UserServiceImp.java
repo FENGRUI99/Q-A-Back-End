@@ -14,18 +14,19 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
@@ -41,6 +42,12 @@ public class UserServiceImp implements UserService {
 
     @Resource
     StringRedisTemplate template;
+
+    @Resource
+    JavaMailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    String user;
 
     @Override
     public ResponseMessage getUserInfo(String id) {
@@ -158,5 +165,43 @@ public class UserServiceImp implements UserService {
             e.printStackTrace();
         }
         return ResponseMessage.fail();
+    }
+
+    @Override
+    public ResponseMessage sendMail(String id, String email) {
+        if(!mapper.checkEmailAndID(id).equals(email))
+            return ResponseMessage.fail("The email does not belong to this id");
+        try {
+            String emailServiceCode = UUID.randomUUID().toString().replace("-", "").toLowerCase().substring(0, 6);
+            template.opsForValue().set(id + "Email_changecode", emailServiceCode, 5*60, TimeUnit.SECONDS);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject("Re-set your password");
+            helper.setText(
+                    "Verification Code: " + emailServiceCode + "   \n" + " You've just apply to change your password in Louder. ");
+            helper.setFrom(user);
+            helper.setTo(email);
+            mailSender.send(message);
+            return ResponseMessage.success();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseMessage.fail();
+
+    }
+
+    @Override
+    public ResponseMessage changePsw(String request, String msg) {
+        String id=request.split(" ")[0];
+        String newPsw=request.split(" ")[1];
+        if(template.opsForValue().get(id + "Email_changecode")==null)
+            return ResponseMessage.fail("The code expire!");
+        if(!msg.equals(template.opsForValue().get(id + "Email_changecode")))
+            return ResponseMessage.fail("Wrong verification code");
+        if(newPsw.equals(mapper.checkPsw(id)))
+            return ResponseMessage.fail("The new password cannot be same as the old one");
+        mapper.changePsw(id,newPsw);
+        template.expire(id + "Email_changecode",1,TimeUnit.MICROSECONDS);
+        return ResponseMessage.success();
     }
 }

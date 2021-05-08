@@ -37,12 +37,6 @@ public class EmailVerifyController {
 
 
 
-    //@RequestMapping("/sendEmailForChangPsw")
-    //public ResponseMessage sendMail(@RequestBody Message message,){
-
-    //}
-
-
     public  String getIpAddr(HttpServletRequest request) {
         String ipAddress = null;
         try {
