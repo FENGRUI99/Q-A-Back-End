@@ -14,4 +14,16 @@
     <select id="getPhoto" resultType="java.lang.String">
         select photo from user_photo where user_id=#{id}
     </select>
+
+    <select id="checkEmailAndID" parameterType="java.lang.String" resultType="java.lang.String">
+        select u.user_mail from user_info u where u.user_id=#{id}
+    </select>
+
+    <update id="changePsw" parameterType="java.lang.String">
+        update user_info u set u.user_psw=#{psw} where u.user_id=#{id}
+    </update>
+
+    <select id="checkPsw" parameterType="java.lang.String" resultType="java.lang.String">
+        select u.user_psw from user_info u where u.user_id=#{id}
+    </select>
 </mapper>

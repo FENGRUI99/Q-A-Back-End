@@ -20,9 +20,6 @@ public class EmailVerifyServiceImp implements EmailVerifyService {
     @Resource
     JavaMailSender mailSender;
 
-    @Resource
-    EmailMapper mapper;
-
     @Value("${spring.mail.username}")
     String user;
 

@@ -13,5 +13,7 @@ public interface UserMapper {
     UserInfo getUserInfo(@Param("id") String id);
     void uploadImg(@Param(("file")) String file, @Param("id") String user_id);
     String getPhoto(@Param("id") String request);
-
+    String checkEmailAndID(@Param("id") String id);
+    void changePsw(@Param("id") String id, @Param("psw") String newPsw);
+    String checkPsw(@Param("id") String id);
 }

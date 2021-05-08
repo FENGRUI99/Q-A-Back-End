@@ -53,4 +53,14 @@ public class UserController {
     public ResponseMessage<List> getQuestionByComment(@RequestBody Message message){
         return service.getQuestionByComment(message.getRequest());
     }
+
+    @RequestMapping("/sendEmailForChangPsw")
+    public ResponseMessage sendMail(@RequestBody Message message){
+        return service.sendMail(message.getRequest(),message.getMsg());
+    }
+
+    @RequestMapping("/changePsw")
+    public ResponseMessage changePsw(@RequestBody Message message){
+        return service.changePsw(message.getRequest(),message.getMsg());
+    }
 }

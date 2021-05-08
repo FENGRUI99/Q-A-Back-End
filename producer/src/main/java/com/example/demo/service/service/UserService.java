@@ -13,4 +13,6 @@ public interface UserService {
     ResponseMessage<List> getQuestionsById(String request);
     ResponseMessage<List> getQuestionsByLike(String request);
     ResponseMessage<List> getQuestionByComment(String msg);
+    ResponseMessage sendMail(String request, String msg);
+    ResponseMessage changePsw(String request, String msg);
 }
