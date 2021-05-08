@@ -2,6 +2,7 @@ package com.example.demo.service.serviceImp;
 
 import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.pojo.UserInfo;
 import com.example.demo.pojo.studentInfo;
 import com.example.demo.service.service.UserService;
 import org.apache.lucene.search.join.ScoreMode;
@@ -43,7 +44,13 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ResponseMessage getUserInfo(String id) {
-        studentInfo student= mapper.getUserInfo(id);
+        UserInfo student= mapper.getUserInfo(id);
+        System.out.println(student);
+        ArrayList<String> o= (ArrayList<String>) getQuestionsByLike(student.getUser_id()).entity;
+        if(o!=null)
+        student.setLike_sum(String.valueOf(o.size()));
+        else
+            student.setLike_sum("0");
         return ResponseMessage.success(student);
     }
 

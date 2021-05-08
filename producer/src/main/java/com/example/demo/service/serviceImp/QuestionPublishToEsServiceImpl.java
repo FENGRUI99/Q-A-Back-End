@@ -54,9 +54,7 @@ public class QuestionPublishToEsServiceImpl implements QuestionPublishToEsServic
         Date date = new Date();
         comment.setCreate_time(date.getTime());
         List<Comment> commentList=questionEs.getCommentList();
-        System.out.println("size: "+commentList.size());
         commentList.add(comment);
-        System.out.println("size: "+commentList.size());
         questionEs.setCommentList(commentList);
         questionEs.addCommentNumber();
         questionDao.save(questionEs);
