@@ -1,6 +1,7 @@
 package com.example.demo.service.service;
 
 import com.example.demo.configuration.ResponseMessage;
+import com.example.demo.pojo.UserInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -15,4 +16,6 @@ public interface UserService {
     ResponseMessage<List> getQuestionByComment(String msg);
     ResponseMessage sendMail(String request, String msg);
     ResponseMessage changePsw(String request, String msg);
+
+    ResponseMessage changeInfo(UserInfo userInfo);
 }

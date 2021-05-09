@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.demo.mapper.UserMapper">
     <select id="getUserInfo" parameterType="java.lang.String" resultType="com.example.demo.pojo.UserInfo">
-        select user_id,user_mail,user_name,user_tags,(select COUNT(*) from question where user_id=#{id} )as Question_sum ,
+        select user_id,user_mail,user_name,user_tags,sex,age,address,major,degree,introduction,usage_time,
+          (select COUNT(*) from question where user_id=#{id} )as Question_sum ,
 (select count(*) from `comment` where user_id=#{id}) as Comment_sum  from user_info where user_id=#{id}
     </select>
 
@@ -26,4 +27,10 @@
     <select id="checkPsw" parameterType="java.lang.String" resultType="java.lang.String">
         select u.user_psw from user_info u where u.user_id=#{id}
     </select>
+
+    <update id="changeInfo" parameterType="java.lang.AutoCloseable">
+        update user_info u set u.sex=#{sex},u.age=#{age},u.address=#{address},u.major=#{major},u.degree=#{degree},
+                               u.introduction=#{introduction}, u.usage_time=#{usage_time}  where u.user_id=#{id}
+    </update>
+
 </mapper>

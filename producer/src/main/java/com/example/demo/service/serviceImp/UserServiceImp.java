@@ -52,7 +52,6 @@ public class UserServiceImp implements UserService {
     @Override
     public ResponseMessage getUserInfo(String id) {
         UserInfo student= mapper.getUserInfo(id);
-        System.out.println(student);
         ArrayList<String> o= (ArrayList<String>) getQuestionsByLike(student.getUser_id()).entity;
         if(o!=null)
         student.setLike_sum(String.valueOf(o.size()));
@@ -204,4 +203,13 @@ public class UserServiceImp implements UserService {
         template.expire(id + "Email_changecode",1,TimeUnit.MICROSECONDS);
         return ResponseMessage.success();
     }
+
+    @Override
+    public ResponseMessage changeInfo(UserInfo userInfo) {
+        mapper.changeInfo(userInfo.getUser_id(),userInfo.getSex(),userInfo.getAge(),userInfo.getAddress(),
+                userInfo.getMajor(),userInfo.getDegree(),userInfo.getIntroduction(),userInfo.getUsage_time());
+        return ResponseMessage.success();
+    }
+
+
 }

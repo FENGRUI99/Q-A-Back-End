@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.configuration.Message;
 import com.example.demo.configuration.ResponseMessage;
+import com.example.demo.pojo.UserInfo;
 import com.example.demo.pojo.studentInfo;
 import com.example.demo.service.service.UserService;
 import io.swagger.annotations.Api;
@@ -62,5 +63,10 @@ public class UserController {
     @RequestMapping("/changePsw")
     public ResponseMessage changePsw(@RequestBody Message message){
         return service.changePsw(message.getRequest(),message.getMsg());
+    }
+
+    @RequestMapping("/changeInfo")
+    public ResponseMessage changeInfo(@RequestBody UserInfo userInfo){
+        return service.changeInfo(userInfo);
     }
 }
