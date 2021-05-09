@@ -37,6 +37,7 @@ public class HelloServiceImp implements HelloService {
             else
                 return ResponseMessage.fail();
         } catch (Exception e){
+            e.printStackTrace();
             return ResponseMessage.fail();
         }
 

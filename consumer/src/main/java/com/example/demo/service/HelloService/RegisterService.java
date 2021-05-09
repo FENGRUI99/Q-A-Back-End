@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@RocketMQMessageListener(topic = "RegisterService",consumerGroup = "registerConsume")
+@RocketMQMessageListener(topic = "RegisterService_A",consumerGroup = "registerConsume")
 @Service
 public class RegisterService implements RocketMQListener<studentInfo> {
 

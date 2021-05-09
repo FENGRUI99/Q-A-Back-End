@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 
 @Service
-@RocketMQMessageListener(topic = "CommentService",consumerGroup = "CommentPublishGroup")
+@RocketMQMessageListener(topic = "CommentPublishService_A",consumerGroup = "CommentPublishGroup")
 public class CommentpublishService implements RocketMQListener<Comment> {
 
     @Resource
@@ -24,11 +24,12 @@ public class CommentpublishService implements RocketMQListener<Comment> {
     @Resource
     StringRedisTemplate template;
     @Override
-    public void onMessage(Comment comment) {
+    public void onMessage(Comment comment){
         Long commentId = template.boundValueOps("CommentId").increment(1);
         comment.setComment_id(commentId.intValue());
         mapper.publishComment(comment);
         mapper.commentIncrement(comment.getQuestion_id());
         questionPublishToEsService.publishComment(comment);
+        template.opsForSet().add(comment.getUser_id() +"_CommentSet",comment.getQuestion_id());
     }
 }

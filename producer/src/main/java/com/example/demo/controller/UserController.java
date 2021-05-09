@@ -69,4 +69,5 @@ public class UserController {
     public ResponseMessage changeInfo(@RequestBody UserInfo userInfo){
         return service.changeInfo(userInfo);
     }
+
 }
