@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @RequestMapping("/Upload")
-    public  ResponseMessage uploadImg(@RequestParam("file") MultipartFile file, @RequestParam("user_id") String user_id) throws IOException {
-        return service.uploadImg(file,user_id);
+    public  ResponseMessage uploadImg(@RequestParam("file") List<MultipartFile> files, @RequestParam("user_id") String user_id) throws IOException {
+        return service.uploadImg(files.get(0),user_id);
     }
 
     @RequestMapping("/getPhoto")
