@@ -9,7 +9,8 @@
 
 
     <insert id="uploadImg" useGeneratedKeys="true">
-        insert into user_photo(user_id,photo) values(#{id},#{file})
+        insert into user_photo(user_id,photo) values(#{id},#{file}) on duplicate key update
+        user_id=values (user_id), photo=values(photo)
     </insert>
 
     <select id="getPhoto" resultType="java.lang.String">
