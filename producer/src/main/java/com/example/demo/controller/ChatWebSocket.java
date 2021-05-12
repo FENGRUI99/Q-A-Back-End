@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.pojo.ChatMsg;
 import com.example.demo.service.service.ChatmsgService;
 import com.example.demo.service.serviceImp.ChatmsgServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -78,10 +81,9 @@ public class ChatWebSocket {
      //给指定的人发消息
      * @param session 可选的参数
      */
-    @SuppressWarnings("unused")
 	@OnMessage
-    public void onMessage(String mine, Session session) {
-        JSONObject jsonObject = JSONObject.parseObject(mine);
+    public void onMessage(String msg, Session session) {
+        JSONObject jsonObject = JSONObject.parseObject(msg);
         String msgtype=jsonObject.getString("type");
         if(msgtype.equals("friend")){
             //sendToUser(jsonObject.toJavaObject(UserInfo.class));

@@ -24,26 +24,15 @@ public class ChatMsg implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 发送者id
-     */
-	private String senduserid;
-    /**
-     * 接收者id
-     */
-	private String reciveuserid;
-    /**
-     * 发送内容
-     */
-	private String content;
-    /**
-     * 发送时间
-     */
-	private Date sendtime;
-    /**
-     * 消息类型
-     */
-	private String msgtype;
+	public String userid;
+
+	public String senduserid;
+
+	public String text;
+
+	public String date;
+
+	public boolean mine;
 
 
 }
