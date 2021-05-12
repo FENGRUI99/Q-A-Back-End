@@ -22,4 +22,9 @@
         select distinct c.user_id, c.user_mail, c.user_name,c.user_tags from user_info c where user_id=#{id};
     </select>
 
+    <select id="PswByid"  resultType="java.lang.String">
+        select user_psw from user_info where user_id=#{id} ;
+    </select>
+
+
 </mapper>
