@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.pojo.ChatMsg;
 import com.example.demo.service.service.ChatmsgService;
 import com.example.demo.service.serviceImp.ChatmsgServiceImp;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -26,6 +30,8 @@ public class ChatWebSocket {
     // 这里使用静态，让 service 属于类
     private static ChatmsgServiceImp chatMsgService;
 
+    @Resource
+    private static RocketMQTemplate rocketMQTemplate;
     // 注入的时候，给类的 service 注入
     @Autowired
     public void setChatService(ChatmsgServiceImp chatMsgService) {
@@ -95,19 +101,29 @@ public class ChatWebSocket {
      *
      * @param message
      */
-//    public void sendToUser(UserInfo message) {
-//        String reviceUserid = message.getToid();
-//        chatMsgService.insertChatmsg(new ChatMsg().setMsgtype("0").setReciveuserid(reviceUserid).setSenduserid(message.getId()).setContent(message.getContent()));
-//        try {
-//            if (webSocketSet.get(reviceUserid) != null) {
-//                webSocketSet.get(reviceUserid).sendMessage(JSONObject.toJSONString(message));//转成json形式发送出去
-//            }else{
-//                webSocketSet.get(userno).sendMessage("0");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void sendToUser(ChatMsg message) {
+        String reviceUserid = message.getSenduser_id();
+        rocketMQTemplate.asyncSend("ChatService", message, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                System.out.println("error");
+            }
+        });
+        try {
+            if (webSocketSet.get(reviceUserid) != null) {
+                webSocketSet.get(reviceUserid).sendMessage(JSONObject.toJSONString(message));//转成json形式发送出去
+            }else{
+                webSocketSet.get(userno).sendMessage("0");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 给群组中的所有人发消息
