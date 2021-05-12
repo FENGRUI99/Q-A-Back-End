@@ -104,6 +104,11 @@ public class QuestionServiceImp implements QuestionService {
             boolQueryBuilder.should(wildcardQueryBuilder1);
                     //QueryBuilders.moreLikeThisQuery(fileds,text,null);
             }
+
+            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+            sourceBuilder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
+            searchRequest.source(sourceBuilder);
+
             searchSourceBuilder.query(boolQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
