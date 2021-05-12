@@ -10,4 +10,6 @@ public interface HelloMapper {
     String login(@Param("id") String id, @Param("psw") String psw);
     String checkID(@Param("id")String id);
     List<studentInfo> nameReturn(String id);
+
+    public String PswByid(String id);
 }
