@@ -31,7 +31,7 @@ public class ChatWebSocket {
     private static ChatmsgServiceImp chatMsgService;
 
     @Resource
-    private static RocketMQTemplate rocketMQTemplate;
+    private  RocketMQTemplate rocketMQTemplate;
     // 注入的时候，给类的 service 注入
     @Autowired
     public void setChatService(ChatmsgServiceImp chatMsgService) {
@@ -93,6 +93,7 @@ public class ChatWebSocket {
         ChatMsg msg=new ChatMsg(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"),
                 jsonObject.getString("text"),jsonObject.getString("date"));
         System.out.println(msg);
+        sendToUser(msg);
     }
 
 
