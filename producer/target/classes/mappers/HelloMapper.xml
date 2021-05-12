@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.HelloMapper">
+
+    <resultMap id="studentinfo" type="com.example.demo.pojo.studentInfo">
+        <id property="user_id" column="user_id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result property="user_mail" column="user_mail" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="user_name" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="user_tags" column="user_tags" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="login" resultType="java.lang.String">
+       select user_psw from user_info where user_id=#{id} ;
+    </select>
+
+    <select id="checkID" resultType="com.example.demo.pojo.studentInfo">
+       select * from user_info where user_id=#{id} ;
+    </select>
+
+
+    <select id="nameReturn" resultMap="studentinfo">
+        select distinct c.user_id, c.user_mail, c.user_name,c.user_tags from user_info c where user_id=#{id};
+    </select>
+
+    <select id="PswByid"  resultType="java.lang.String">
+        select user_psw from user_info where user_id=#{id} ;
+    </select>
+
+
+</mapper>
