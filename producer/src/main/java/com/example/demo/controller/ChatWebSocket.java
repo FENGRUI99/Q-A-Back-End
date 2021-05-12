@@ -82,14 +82,11 @@ public class ChatWebSocket {
      * @param session 可选的参数
      */
 	@OnMessage
-    public void onMessage(String msg, Session session) {
-        JSONObject jsonObject = JSONObject.parseObject(msg);
-        String msgtype=jsonObject.getString("type");
-        if(msgtype.equals("friend")){
-            //sendToUser(jsonObject.toJavaObject(UserInfo.class));
-        }else if(msgtype.equals("group")){
-            //sendAll(jsonObject.toJavaObject(UserInfo.class));
-        }
+    public void onMessage(String obj, Session session) {
+        JSONObject jsonObject = JSONObject.parseObject(obj);
+        ChatMsg msg=new ChatMsg(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"),
+                jsonObject.getString("text"),jsonObject.getString("date"));
+        System.out.println(msg);
     }
 
 
