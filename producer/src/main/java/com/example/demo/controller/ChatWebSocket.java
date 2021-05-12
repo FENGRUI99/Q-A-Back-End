@@ -28,10 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/websocket/{userno}")
 public class ChatWebSocket {
     // 这里使用静态，让 service 属于类
-    private static ChatmsgServiceImp chatMsgService;
+    private static ChatmsgService chatMsgService;
 
-    @Resource
-    private  RocketMQTemplate rocketMQTemplate;
     // 注入的时候，给类的 service 注入
     @Autowired
     public void setChatService(ChatmsgServiceImp chatMsgService) {
@@ -104,17 +102,7 @@ public class ChatWebSocket {
      */
     public void sendToUser(ChatMsg message) {
         String reviceUserid = message.getSenduser_id();
-        rocketMQTemplate.asyncSend("ChatService", message, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                System.out.println("error");
-            }
-        });
+        chatMsgService.insertChatmsg(message);
         try {
             if (webSocketSet.get(reviceUserid) != null) {
                 webSocketSet.get(reviceUserid).sendMessage(JSONObject.toJSONString(message));//转成json形式发送出去
