@@ -143,6 +143,7 @@ public class ChatWebSocket {
      * @throws IOException
      */
     public void sendMessage(String message) throws IOException {
+
         this.WebSocketsession.getBasicRemote().sendText(message);
         //this.session.getAsyncRemote().sendText(message);
     }
