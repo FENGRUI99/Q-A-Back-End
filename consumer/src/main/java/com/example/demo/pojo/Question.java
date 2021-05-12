@@ -1,10 +1,16 @@
 package com.example.demo.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
 import java.io.Serializable;
 import java.util.List;
 
 
-
+@Data
+@Accessors(chain = true)//链式写法
 public class Question implements Serializable {
 
 

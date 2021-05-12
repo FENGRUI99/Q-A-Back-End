@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.ChatMapper">
+
+
+    <insert id="insertMessage" useGeneratedKeys="true" parameterType="java.lang.String">
+        insert into chat(user_id,senduser_id,text,date) values(#{user_id},#{senduser_id},#{text},#{date})
+    </insert>
+</mapper>

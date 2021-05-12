@@ -25,12 +25,15 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-websocket:2.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-websocket:5.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-redis:2.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-keyvalue:2.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.4.5" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-oxm:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.4" level="project" />

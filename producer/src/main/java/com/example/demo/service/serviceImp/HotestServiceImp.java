@@ -65,9 +65,6 @@ public class HotestServiceImp implements HotestService {
                 Set<String> list=template.opsForSet().members(user_id+"_likeSet");
                 ResponseMessage message=ResponseMessage.success();
                 message.setEntity(list);
-                for (String s : list) {
-                    System.out.println(s);
-                }
                 return message;
             }else{
                template.opsForSet().add(user_id+"_likeSet","-1");

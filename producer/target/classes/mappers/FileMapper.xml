@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.FIleMapper">
+    <insert id="addPic" useGeneratedKeys="true">
+        insert into question_picture(question_id,picture) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{id},#{item}
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="getImage" parameterType="java.lang.String" resultType="java.lang.String">
+        select picture from question_picture where
+        question_id =#{id}
+    </select>
+
+    <insert id="publishQuestion" parameterType="com.example.demo.pojo.Question" >
+        insert into question(question_id,user_id,user_name,question_description,question_detail,question_tags,create_time)
+         values (#{id},#{question.user_id},#{question.user_name},#{question.question_description},
+        #{question.question_detail},#{question.question_tags},#{question.time})
+            on duplicate key update user_id=(user_id),
+            user_name=(user_name),
+            question_description=(question_description),
+            question_detail = (question_detail), question_tags=(question_tags),create_time=(create_time)
+    </insert>
+
+    <insert id="publishComment" parameterType="com.example.demo.pojo.Comment" >
+        insert into comment(comment_id,user_id,user_name,comment_detail,question_id,create_time)
+        values (#{comment.comment_id},#{comment.user_id},#{comment.user_name},#{comment.comment_detail},
+                #{comment.question_id},#{comment.create_time})
+            on duplicate key update comment_id=(comment_id),
+                user_name=(user_name),
+                comment_detail=(comment_detail),
+                question_id = (question_id)
+    </insert>
+
+    <update id="commentIncrement" parameterType="java.lang.String" >
+        update question set number_comment=number_comment+1 where question_id =#{id}
+    </update>
+
+</mapper>

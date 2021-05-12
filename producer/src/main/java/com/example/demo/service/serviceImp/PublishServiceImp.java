@@ -82,9 +82,7 @@ public class PublishServiceImp implements PublishService {
             rocketMQTemplate.asyncSend("CommentPublishService_A", comment, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
-
             }
-
             @Override
             public void onException(Throwable throwable) {
                 System.out.println("error");
