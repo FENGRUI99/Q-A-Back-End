@@ -89,7 +89,7 @@ public class ChatWebSocket {
     public void onMessage(String obj, Session session) {
         JSONObject jsonObject = JSONObject.parseObject(obj);
         ChatMsg msg=new ChatMsg(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"),
-                jsonObject.getString("text"),jsonObject.getString("name"),jsonObject.getString("date"));
+                jsonObject.getString("name"),jsonObject.getString("text"),jsonObject.getString("date"));
         System.out.println(msg);
         sendToUser(msg);
     }
