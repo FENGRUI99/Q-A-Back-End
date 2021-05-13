@@ -15,6 +15,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Service;
@@ -37,13 +38,23 @@ public class QuestionServiceImp implements QuestionService {
     QuestionDao dao;
 
     @Override
-    public ResponseMessage listQuestion(String id) {
+    public ResponseMessage listQuestion(String user_tags) {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-            QueryBuilder builder=QueryBuilders.matchAllQuery();
+
             searchSourceBuilder.size(2000);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+
+            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+            if (user_tags != null){
+                QueryBuilder builder=QueryBuilders.matchQuery("question_tags",user_tags);
+                searchSourceBuilder.query(builder);
+                sourceBuilder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
+            }
+            sourceBuilder.sort(new FieldSortBuilder("creat_time").order(SortOrder.ASC));
+            searchRequest.source(sourceBuilder);
+
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             ArrayList<Map<String,Object>> list=new ArrayList<>();
@@ -93,6 +104,11 @@ public class QuestionServiceImp implements QuestionService {
             boolQueryBuilder.should(wildcardQueryBuilder1);
                     //QueryBuilders.moreLikeThisQuery(fileds,text,null);
             }
+
+            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+            sourceBuilder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
+            searchRequest.source(sourceBuilder);
+
             searchSourceBuilder.query(boolQueryBuilder);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //开始搜索
