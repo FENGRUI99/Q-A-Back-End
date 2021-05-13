@@ -3,6 +3,8 @@ package com.example.demo.pojo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
+//返回的聊天记录格式
 public class chatRecords implements Serializable {
     String senduser_id;
     ArrayList<ChatInfo> list;

@@ -2,10 +2,12 @@ package com.example.demo.mapper;
 
 import com.example.demo.pojo.ChatInfo;
 import com.example.demo.pojo.ChatMsg;
+import com.example.demo.pojo.chatRecords;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public interface ChatMapper {

@@ -19,4 +19,9 @@ public class ChatController {
     public ResponseMessage getChatRecords(@RequestBody Message message){
         return service.getChatMsg(message.getRequest(), message.getMsg());
     }
+
+    @RequestMapping("/getRecentChat")
+    protected ResponseMessage getRecentChat(@RequestBody Message message){
+        return service.getRecentChat(message.getRequest());
+    }
 }

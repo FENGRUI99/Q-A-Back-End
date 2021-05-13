@@ -17,6 +17,7 @@ import java.util.Date;
  * @since 2019-12-25
  */
 
+//插入的聊天记录
 public class ChatMsg implements Serializable {
 
     private static final long serialVersionUID = 1L;

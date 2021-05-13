@@ -2,6 +2,7 @@ package com.example.demo.pojo;
 
 import java.io.Serializable;
 
+//返回的聊天记录
 public class ChatInfo implements Serializable {
 
     public String text;
