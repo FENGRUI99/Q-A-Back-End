@@ -25,11 +25,12 @@ public class ChatMsg implements Serializable {
 
 	public String senduser_id;
 
-	public ChatMsg(String user_id, String senduser_id, String text, String name, String date) {
+	public ChatMsg(String user_id, String senduser_id,  String name,String text, String date) {
 		this.user_id = user_id;
 		this.senduser_id = senduser_id;
-		this.text = text;
 		this.name = name;
+		this.text = text;
+
 		this.date = date;
 	}
 
