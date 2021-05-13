@@ -3,7 +3,17 @@
 <mapper namespace="com.example.demo.mapper.ChatMapper">
 
 
+
+
+
+
     <insert id="insertMessage" useGeneratedKeys="true" parameterType="java.lang.String">
-        insert into chat(user_id,senduser_id,text,date) values(#{user_id},#{senduser_id},#{text},#{date})
+        insert into chat(user_id,senduser_id,name,text,date) values(#{user_id},#{senduser_id},#{name},#{text},#{date})
     </insert>
+
+
+    <select id="getChatMsg" parameterType="java.lang.String" resultType="com.example.demo.pojo.ChatInfo">
+    select c.text,c.date,c.name, (case when user_id=#{user_id} and senduser_id=#{senduser_id} then 1 else 0 end) as mine from chat c where (user_id=#{user_id} and senduser_id=#{senduser_id}) or( user_id=#{senduser_id} and senduser_id=#{user_id})
+  </select>
+
 </mapper>

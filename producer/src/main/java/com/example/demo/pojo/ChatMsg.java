@@ -25,11 +25,43 @@ public class ChatMsg implements Serializable {
 
 	public String senduser_id;
 
+	public ChatMsg(String user_id, String senduser_id, String text, String name, String date) {
+		this.user_id = user_id;
+		this.senduser_id = senduser_id;
+		this.text = text;
+		this.name = name;
+		this.date = date;
+	}
+
 	public String text;
+
+	public String name;
 
 	public String date;
 
+	public String img;
+
 	public boolean mine;
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+
+
 
 	@Override
 	public String toString() {
@@ -96,4 +128,7 @@ public class ChatMsg implements Serializable {
 		this.text = text;
 		this.date = date;
 	}
+
+
+
 }
