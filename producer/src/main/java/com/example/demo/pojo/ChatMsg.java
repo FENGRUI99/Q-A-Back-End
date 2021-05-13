@@ -30,7 +30,6 @@ public class ChatMsg implements Serializable {
 		this.senduser_id = senduser_id;
 		this.name = name;
 		this.text = text;
-
 		this.date = date;
 	}
 
