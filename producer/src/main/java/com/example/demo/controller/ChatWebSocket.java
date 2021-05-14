@@ -94,7 +94,7 @@ public class ChatWebSocket {
 
         ChatMsg msg=new ChatMsg(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"),
                 jsonObject.getString("name"),jsonObject.getString("text"),jsonObject.getString("date"));
-        System.out.println(msg);
+        chatMsgService.setHotestChat(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"));
         sendToUser(msg);
     }
 

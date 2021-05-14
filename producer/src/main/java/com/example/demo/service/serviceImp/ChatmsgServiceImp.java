@@ -43,4 +43,9 @@ public class ChatmsgServiceImp implements ChatmsgService {
         mapper.getRecentChat(list);
         return null;
     }
+
+    @Override
+    public void setHotestChat(String user_id, String senduser_id) {
+        template.opsForList().leftPush(senduser_id+"chatList",user_id);
+    }
 }

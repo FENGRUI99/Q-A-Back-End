@@ -10,4 +10,5 @@ public interface ChatmsgService {
     public void insertChatmsg(ChatMsg chatmsg);
     ResponseMessage getChatMsg(String user_id, String senduser_id);
     ResponseMessage getRecentChat(String request);
+    void setHotestChat(String user_id, String senduser_id);
 }
