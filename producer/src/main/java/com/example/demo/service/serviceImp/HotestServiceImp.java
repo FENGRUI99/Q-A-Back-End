@@ -84,9 +84,12 @@ public class HotestServiceImp implements HotestService {
         try{
             String user_id=message.getRequest().split(" ")[0];
             String question_id=message.getRequest().split(" ")[1];
-            int sum= Integer.parseInt(template.opsForHash().get("question_like",question_id).toString());
+            int sum;
+            if(template.opsForHash().hasKey("question_like",question_id))
+                sum= Integer.parseInt(template.opsForHash().get("question_like",question_id).toString());
+            else
+                sum=0;
             if(!template.opsForSet().isMember(user_id + "_likeSet",question_id)) {
-
                 template.opsForSet().add(user_id + "_likeSet",question_id);
                 sum++;
             } else {
