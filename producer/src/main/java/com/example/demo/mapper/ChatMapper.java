@@ -13,7 +13,6 @@ import java.util.List;
 public interface ChatMapper {
 
     void insertMessage(@Param("user_id") String user_id,@Param("senduser_id") String senduser_id,
-                       @Param("name") String name,@Param("text")String text, @Param("text")String date);
-
+                       @Param("name") String name,@Param("text")String text, @Param("date")String date);
     ArrayList<ChatInfo> getChatMsg(@Param("user_id") String user_id, @Param("senduser_id") String senduser_id);
 }

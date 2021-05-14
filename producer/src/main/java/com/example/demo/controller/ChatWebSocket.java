@@ -8,6 +8,7 @@ import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,8 @@ public class ChatWebSocket {
     // 这里使用静态，让 service 属于类
     private static ChatmsgService chatMsgService;
 
+    @Resource
+    StringRedisTemplate template;
     // 注入的时候，给类的 service 注入
     @Autowired
     public void setChatService(ChatmsgServiceImp chatMsgService) {
@@ -88,6 +91,8 @@ public class ChatWebSocket {
 	@OnMessage
     public void onMessage(String obj, Session session) {
         JSONObject jsonObject = JSONObject.parseObject(obj);
+        template.opsForList().remove(jsonObject.getString("senduser_id")+"chatList",-1,jsonObject.getString("user_id"));
+        template.opsForList().leftPush(jsonObject.getString("senduser_id")+"chatList",jsonObject.getString("user_id"));
         ChatMsg msg=new ChatMsg(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"),
                 jsonObject.getString("name"),jsonObject.getString("text"),jsonObject.getString("date"));
         System.out.println(msg);
