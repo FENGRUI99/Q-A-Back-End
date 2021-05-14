@@ -39,6 +39,8 @@ public class ChatmsgServiceImp implements ChatmsgService {
 
     @Override
     public ResponseMessage getRecentChat(String request) {
+        List<String> list=template.opsForList().range(request+"chatList",0,10);
+        mapper.getRecentChat(list);
         return null;
     }
 }

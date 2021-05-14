@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.pojo.ChatBoxMessage;
 import com.example.demo.pojo.ChatInfo;
 import com.example.demo.pojo.ChatMsg;
 import com.example.demo.pojo.chatRecords;
@@ -15,4 +16,6 @@ public interface ChatMapper {
     void insertMessage(@Param("user_id") String user_id,@Param("senduser_id") String senduser_id,
                        @Param("name") String name,@Param("text")String text, @Param("date")String date);
     ArrayList<ChatInfo> getChatMsg(@Param("user_id") String user_id, @Param("senduser_id") String senduser_id);
+
+    List<ChatBoxMessage> getRecentChat(List<String> list);
 }

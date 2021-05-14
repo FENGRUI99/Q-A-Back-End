@@ -91,8 +91,7 @@ public class ChatWebSocket {
 	@OnMessage
     public void onMessage(String obj, Session session) {
         JSONObject jsonObject = JSONObject.parseObject(obj);
-        template.opsForList().remove(jsonObject.getString("senduser_id")+"chatList",-1,jsonObject.getString("user_id"));
-        template.opsForList().leftPush(jsonObject.getString("senduser_id")+"chatList",jsonObject.getString("user_id"));
+
         ChatMsg msg=new ChatMsg(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"),
                 jsonObject.getString("name"),jsonObject.getString("text"),jsonObject.getString("date"));
         System.out.println(msg);
