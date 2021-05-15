@@ -2,19 +2,18 @@ package com.example.demo.service.serviceImp;
 
 import com.example.demo.configuration.ResponseMessage;
 import com.example.demo.mapper.ChatMapper;
+import com.example.demo.pojo.ChatBoxMessage;
 import com.example.demo.pojo.ChatInfo;
 import com.example.demo.pojo.ChatMsg;
 import com.example.demo.pojo.chatRecords;
 import com.example.demo.service.service.ChatmsgService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ChatmsgServiceImp implements ChatmsgService {
@@ -40,13 +39,25 @@ public class ChatmsgServiceImp implements ChatmsgService {
     @Override
     public ResponseMessage getRecentChat(String request) {
         List<String> list=template.opsForList().range(request+"chatList",0,10);
-        mapper.getRecentChat(list);
-        return null;
+        List<ChatBoxMessage> result=mapper.getRecentChat(list,request);
+        for (ChatBoxMessage item : result) {
+            String value= (String) template.opsForHash().get(request+"chatHas",item);
+            item.setReadNum(value);
+        }
+        template.expire(request+"chatHash",1, TimeUnit.MICROSECONDS);
+        return ResponseMessage.success(result);
     }
 
     @Override
-    public void setHotestChat(String user_id, String senduser_id) {
+    public void setHotestChat(String user_id, String senduser_id, boolean b) {
         template.opsForList().remove(senduser_id+"chatList",-1,user_id);
         template.opsForList().leftPush(senduser_id+"chatList",user_id);
+        if(b)
+            return;
+        if(template.opsForHash().hasKey(senduser_id+"chatHsh",user_id)){
+            template.opsForHash().increment(senduser_id+"chatHash",user_id,1);
+        }else{
+            template.opsForHash().put(senduser_id+"chatHash",user_id,1);
+        }
     }
 }

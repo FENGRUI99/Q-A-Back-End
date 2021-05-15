@@ -94,7 +94,7 @@ public class ChatWebSocket {
 
         ChatMsg msg=new ChatMsg(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"),
                 jsonObject.getString("name"),jsonObject.getString("text"),jsonObject.getString("date"));
-        chatMsgService.setHotestChat(jsonObject.getString("user_id"),jsonObject.getString("senduser_id"));
+
         sendToUser(msg);
     }
 
@@ -110,7 +110,9 @@ public class ChatWebSocket {
         try {
             if (webSocketSet.get(reviceUserid) != null) {
                 webSocketSet.get(reviceUserid).sendMessage(JSONObject.toJSONString(message));//转成json形式发送出去
+                chatMsgService.setHotestChat(message.getUser_id(),message.getSenduser_id(), true);
             }else{
+                chatMsgService.setHotestChat(message.getUser_id(),message.getSenduser_id(), false);
                 webSocketSet.get(userno).sendMessage("0");
             }
         } catch (IOException e) {

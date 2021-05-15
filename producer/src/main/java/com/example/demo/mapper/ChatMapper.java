@@ -17,5 +17,5 @@ public interface ChatMapper {
                        @Param("name") String name,@Param("text")String text, @Param("date")String date);
     ArrayList<ChatInfo> getChatMsg(@Param("user_id") String user_id, @Param("senduser_id") String senduser_id);
 
-    List<ChatBoxMessage> getRecentChat(List<String> list);
+    List<ChatBoxMessage> getRecentChat(@Param("list") List<String> list,@Param("id") String id);
 }
