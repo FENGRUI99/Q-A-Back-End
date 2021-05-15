@@ -50,7 +50,7 @@ public class ChatmsgServiceImp implements ChatmsgService {
 
     @Override
     public void setHotestChat(String user_id, String senduser_id, boolean b) {
-        template.opsForList().remove(senduser_id+"chatList",-1,user_id);
+        template.opsForList().remove(senduser_id+"chatList",10,user_id);
         template.opsForList().leftPush(senduser_id+"chatList",user_id);
         if(b)
             return;
