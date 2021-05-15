@@ -55,7 +55,8 @@ public class ChatmsgServiceImp implements ChatmsgService {
         if(b)
             return;
         if(template.opsForHash().hasKey(senduser_id+"chatHsh",user_id)){
-            template.opsForHash().increment(senduser_id+"chatHash",user_id,1);
+            int sum=Integer.parseInt((String) template.opsForHash().get(senduser_id+"chatHash",user_id))+1;
+            template.opsForHash().put(senduser_id+"chatHash",user_id,sum);
         }else{
             template.opsForHash().put(senduser_id+"chatHash",user_id,1);
         }
