@@ -42,25 +42,17 @@ public class QuestionServiceImp implements QuestionService {
         try {
             SearchRequest searchRequest = new SearchRequest("questiones");
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
+            QueryBuilder builder=QueryBuilders.matchAllQuery();
             searchSourceBuilder.size(2000);
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
-
-            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-            if (user_tags != null){
-                QueryBuilder builder=QueryBuilders.matchQuery("question_tags",user_tags);
-                searchSourceBuilder.query(builder);
-                sourceBuilder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
-            }
-            sourceBuilder.sort(new FieldSortBuilder("creat_time").order(SortOrder.ASC));
-            searchRequest.source(sourceBuilder);
-
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             ArrayList<Map<String,Object>> list=new ArrayList<>();
+
             for (SearchHit documentFields : searchResponse.getHits().getHits()) {
                 list.add(documentFields.getSourceAsMap());
             }
+            Collections.shuffle(list);
             ResponseMessage responseMessage=ResponseMessage.success();
             responseMessage.setEntity(list);
             return responseMessage;

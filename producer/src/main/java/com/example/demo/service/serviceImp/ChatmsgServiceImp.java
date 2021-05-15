@@ -39,6 +39,8 @@ public class ChatmsgServiceImp implements ChatmsgService {
     @Override
     public ResponseMessage getRecentChat(String request) {
         List<String> list=template.opsForList().range(request+"chatList",0,10);
+        if(list.size()==0)
+            return ResponseMessage.success();
         List<ChatBoxMessage> result=mapper.getRecentChat(list,request);
         for (ChatBoxMessage item : result) {
             String value= (String) template.opsForHash().get(request+"chatHash",item.getId());
