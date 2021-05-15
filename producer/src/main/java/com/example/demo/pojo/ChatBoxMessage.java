@@ -17,6 +17,12 @@ public class ChatBoxMessage implements Serializable {
         this.readNum = readNum;
     }
 
+    public ChatBoxMessage(String id, String img, String name) {
+        this.id = id;
+        this.img = img;
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }

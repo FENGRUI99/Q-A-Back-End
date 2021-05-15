@@ -41,7 +41,9 @@ public class ChatmsgServiceImp implements ChatmsgService {
         List<String> list=template.opsForList().range(request+"chatList",0,10);
         List<ChatBoxMessage> result=mapper.getRecentChat(list,request);
         for (ChatBoxMessage item : result) {
-            String value= (String) template.opsForHash().get(request+"chatHas",item);
+            String value= (String) template.opsForHash().get(request+"chatHash",item.getId());
+            if(value==null)
+                value="0";
             item.setReadNum(value);
         }
         template.expire(request+"chatHash",1, TimeUnit.MICROSECONDS);

@@ -27,7 +27,7 @@
     <select id="getRecentChat" resultType="com.example.demo.pojo.ChatBoxMessage" >
         select distinct u.user_id as id, p.photo as img, u.user_name as name from user_info u, user_photo p
         where u.user_id= CONVERT(p.user_id USING utf8) COLLATE utf8_unicode_ci and u.user_id in
-        <foreach collection="list" item="item" index="item" separator="," open="(" close=")">
+        <foreach collection="list" item="item" index="item" separator=" , " open="(" close=")">
             #{item}
         </foreach>
     </select>
