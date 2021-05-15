@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.ChatMapper">
+
+
+    <resultMap id="chatRecords" type="com.example.demo.pojo.ChatMsg">
+        <constructor>
+        <arg column="text" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <arg column="name" javaType="java.lang.String"  jdbcType="VARCHAR"/>
+        <arg column="date" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <arg column="img" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <arg column="mine" javaType="java.lang.Boolean"  jdbcType="TINYINT"/>
+        </constructor>
+    </resultMap>
+
+
+
+    <insert id="insertMessage" useGeneratedKeys="true" parameterType="java.lang.String">
+        insert into chat(user_id,senduser_id,name,text,date) values(#{user_id},#{senduser_id},#{name},#{text},#{date})
+    </insert>
+
+
+    <select id="getChatMsg" parameterType="java.lang.String" resultType="com.example.demo.pojo.ChatInfo">
+    select c.text, c.name,c.date, (case when user_id=#{user_id} and senduser_id=#{senduser_id} then 1 else 0 end) as mine from chat c where (user_id=#{user_id} and senduser_id=#{senduser_id}) or( user_id=#{senduser_id} and senduser_id=#{user_id})
+  </select>
+
+    <select id="getRecentChat" resultType="com.example.demo.pojo.ChatBoxMessage" >
+        select distinct u.user_id as id, p.photo as img, u.user_name as name from user_info u, user_photo p
+        where u.user_id= CONVERT(p.user_id USING utf8) COLLATE utf8_unicode_ci and u.user_id in
+        <foreach collection="list" item="item" index="item" separator=" , " open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>
