@@ -52,7 +52,12 @@ public class UserServiceImp implements UserService {
     @Override
     public ResponseMessage getUserInfo(String id) {
         UserInfo student= mapper.getUserInfo(id);
-        ArrayList<String> o= (ArrayList<String>) getQuestionsByLike(student.getUser_id()).entity;
+        ArrayList<String> o=null;
+        try {
+            o= (ArrayList<String>) getQuestionsByLike(student.getUser_id()).entity;
+        }catch (Exception e){
+
+        }
         if(o!=null)
         student.setLike_sum(String.valueOf(o.size()));
         else
