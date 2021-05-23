@@ -21,7 +21,7 @@ spring:
         max-idle: 100
     host: 121.5.27.43
     password: louder123
-    port: 6380
+    port: 6379
     timeout: 5000
   data:
     elasticsearch:
